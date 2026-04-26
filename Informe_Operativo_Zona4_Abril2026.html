@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Informe Operativo — Zona 4 | Abril 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root {
+    --c-bg:           #F4F6F2;
+    --c-surface:      #FAFCF8;
+    --c-ink:          #1A2B1C;
+    --c-ink-soft:     #4A5C4B;
+    --c-ink-ghost:    #8A9E8B;
+    --c-border:       rgba(26,65,30,0.10);
+    --c-border-strong:rgba(26,65,30,0.22);
+    --c-red:          #D95F0A;
+    --c-red-bg:       #FEF3E8;
+    --c-amber:        #B84D00;
+    --c-amber-bg:     #FDF0E4;
+    --c-green:        #1A6B2F;
+    --c-green-bg:     #E8F5EC;
+    --c-blue:         #1B5E20;
+    --c-blue-bg:      #E9F3EA;
+    --c-accent:       #E8620A;
+    --c-chart-1:      #1A6B2F;
+    --c-chart-2:      #E8620A;
+    --c-chart-3:      #2E8B45;
+    --c-chart-4:      #C0580A;
+    --c-chart-5:      #3DAA5C;
+    --c-chart-6:      #FF8C38;
+    --font-body:      'DM Sans', sans-serif;
+    --font-display:   'DM Serif Display', serif;
+    --font-mono:      'IBM Plex Mono', monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--font-body); background: var(--c-bg); color: var(--c-ink); font-size: 15px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+
+  /* COVER */
+  .cover { background: #0D3B16; color: #F4F6F2; padding: 3.5rem 4rem; position: relative; overflow: hidden; }
+  .cover::before { content: ''; position: absolute; top: 0; right: 0; bottom: 0; width: 38%; background: var(--c-accent); clip-path: polygon(18% 0, 100% 0, 100% 100%, 0% 100%); }
+  .cover-inner { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; }
+  .cover-logos { display: flex; align-items: center; gap: 20px; margin-bottom: 2rem; flex-wrap: wrap; }
+  .cover-logo-sep { width: 1px; height: 48px; background: rgba(255,255,255,0.25); }
+  .cover-wordmark-title { font-family: var(--font-display); font-size: 1.1rem; font-weight: 400; color: #F4F6F2; letter-spacing: 0.04em; }
+  .cover-wordmark-sub { font-family: var(--font-mono); font-size: 9px; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(244,246,242,0.5); margin-top: 2px; }
+  .cover-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(244,246,242,0.5); margin-bottom: 1.6rem; }
+  .cover-title { font-family: var(--font-display); font-size: 3rem; line-height: 1.1; font-weight: 400; max-width: 520px; margin-bottom: 1rem; }
+  .cover-subtitle { font-size: 16px; color: rgba(244,246,242,0.65); max-width: 480px; font-weight: 300; margin-bottom: 2.5rem; }
+  .cover-meta { display: flex; gap: 2.5rem; flex-wrap: wrap; }
+  .meta-label { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(244,246,242,0.45); margin-bottom: 3px; }
+  .meta-val { font-size: 14px; font-weight: 500; color: #F4F6F2; }
+
+  /* NAV */
+  .nav-bar { background: var(--c-surface); border-bottom: 1px solid var(--c-border-strong); position: sticky; top: 0; z-index: 100; }
+  .nav-inner { max-width: 960px; margin: 0 auto; padding: 0 2rem; display: flex; overflow-x: auto; scrollbar-width: none; }
+  .nav-inner::-webkit-scrollbar { display: none; }
+  .nav-link { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--c-ink-ghost); text-decoration: none; padding: 14px 18px; border-bottom: 2px solid transparent; white-space: nowrap; transition: color 0.2s, border-color 0.2s; }
+  .nav-link:hover { color: var(--c-ink); border-bottom-color: var(--c-border-strong); }
+  .nav-link.active { color: var(--c-accent); border-bottom-color: var(--c-accent); }
+
+  /* LAYOUT */
+  .wrapper { max-width: 960px; margin: 0 auto; padding: 0 2rem; }
+  .section { padding: 3rem 0; border-bottom: 1px solid var(--c-border); }
+  .section:last-child { border-bottom: none; }
+  .section-header { margin-bottom: 2rem; }
+  .section-eyebrow { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--c-accent); margin-bottom: 6px; }
+  .section-title { font-family: var(--font-display); font-size: 1.9rem; font-weight: 400; line-height: 1.2; }
+  .section-desc { margin-top: 8px; font-size: 14px; color: var(--c-ink-soft); max-width: 600px; }
+
+  /* KPI */
+  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-bottom: 2rem; }
+  .kpi-card { background: var(--c-surface); border: 1px solid var(--c-border); border-radius: 8px; padding: 1.2rem 1.4rem; position: relative; overflow: hidden; }
+  .kpi-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+  .kpi-card.red::before { background: var(--c-red); }
+  .kpi-card.amber::before { background: var(--c-amber); }
+  .kpi-card.green::before { background: var(--c-green); }
+  .kpi-card.blue::before { background: var(--c-blue); }
+  .kpi-label { font-size: 11px; color: var(--c-ink-ghost); text-transform: uppercase; letter-spacing: 0.07em; font-family: var(--font-mono); margin-bottom: 8px; }
+  .kpi-value { font-family: var(--font-display); font-size: 2.2rem; line-height: 1; margin-bottom: 4px; }
+  .kpi-value.red { color: var(--c-red); }
+  .kpi-value.amber { color: var(--c-amber); }
+  .kpi-value.green { color: var(--c-green); }
+  .kpi-value.blue { color: var(--c-blue); }
+  .kpi-sub { font-size: 12px; color: var(--c-ink-ghost); }
+
+  /* CHART CARD */
+  .chart-card { background: var(--c-surface); border: 1px solid var(--c-border); border-radius: 8px; padding: 1.5rem; margin-bottom: 1rem; }
+  .chart-title { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--c-ink-soft); margin-bottom: 1rem; }
+  .chart-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+
+  /* LEGEND */
+  .legend { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 12px; font-size: 12px; color: var(--c-ink-soft); }
+  .legend-item { display: flex; align-items: center; gap: 6px; }
+  .legend-swatch { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+
+  /* PROGRESS BARS */
+  .nov-row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--c-border); }
+  .nov-row:last-child { border-bottom: none; }
+  .nov-tag { font-size: 12.5px; font-weight: 500; min-width: 145px; color: var(--c-ink); }
+  .nov-bar-wrap { flex: 1; height: 7px; background: var(--c-bg); border-radius: 99px; overflow: hidden; }
+  .nov-bar-fill { height: 100%; border-radius: 99px; }
+  .nov-pct { font-family: var(--font-mono); font-size: 12px; min-width: 48px; text-align: right; color: var(--c-red); font-weight: 500; }
+  .nov-corr { font-size: 11px; color: var(--c-green); min-width: 90px; text-align: right; }
+
+  /* DAY TABS */
+  .day-tabs { display: flex; gap: 8px; margin-bottom: 1rem; flex-wrap: wrap; }
+  .day-tab { background: var(--c-surface); border: 1px solid var(--c-border); border-radius: 6px; padding: 6px 14px; font-size: 11px; cursor: pointer; color: var(--c-ink-ghost); font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.07em; transition: all 0.15s; }
+  .day-tab:hover { color: var(--c-ink); border-color: var(--c-border-strong); }
+  .day-tab.active { background: var(--c-red-bg); border-color: rgba(217,95,10,0.4); color: var(--c-red); }
+  .day-panel { display: none; }
+  .day-panel.active { display: block; }
+
+  /* INSIGHTS */
+  .insights { display: flex; flex-direction: column; gap: 8px; margin-top: 1.5rem; }
+  .insight { padding: 12px 16px; border-radius: 6px; font-size: 13.5px; line-height: 1.55; border-left: 3px solid; display: flex; align-items: flex-start; gap: 10px; }
+  .insight.critical { background: var(--c-red-bg); border-left-color: var(--c-red); color: #7A2E0A; }
+  .insight.warning { background: var(--c-amber-bg); border-left-color: var(--c-amber); color: #6B3707; }
+  .insight.positive { background: var(--c-green-bg); border-left-color: var(--c-green); color: #144928; }
+  .insight.info { background: var(--c-blue-bg); border-left-color: var(--c-blue); color: #0F3A12; }
+  .insight-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+
+  /* SUBS TABLE */
+  .subs-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  .subs-table th { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.09em; color: var(--c-ink-ghost); text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--c-border-strong); font-weight: 400; }
+  .subs-table td { padding: 12px 12px; border-bottom: 1px solid var(--c-border); vertical-align: middle; }
+  .subs-table tr:last-child td { border-bottom: none; }
+  .subs-table .pct-cell { font-family: var(--font-mono); font-weight: 500; }
+  .pct-cell.green { color: var(--c-green); }
+  .pct-cell.amber { color: var(--c-amber); }
+  .pct-cell.red { color: var(--c-red); }
+  .badge-r { display: inline-block; background: var(--c-red-bg); color: var(--c-red); border: 1px solid rgba(217,95,10,0.3); border-radius: 4px; padding: 2px 8px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; font-family: var(--font-mono); }
+  .badge-a { display: inline-block; background: var(--c-amber-bg); color: var(--c-amber); border: 1px solid rgba(184,77,0,0.3); border-radius: 4px; padding: 2px 8px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; font-family: var(--font-mono); }
+  .badge-g { display: inline-block; background: var(--c-green-bg); color: var(--c-green); border: 1px solid rgba(26,107,47,0.3); border-radius: 4px; padding: 2px 8px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; font-family: var(--font-mono); }
+
+  /* REC GRID */
+  .rec-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 1rem; }
+  .rec-card { background: var(--c-surface); border: 1px solid var(--c-border); border-radius: 8px; padding: 1.25rem; }
+  .rec-num { font-family: var(--font-display); font-size: 2rem; color: var(--c-accent); opacity: 0.5; line-height: 1; margin-bottom: 6px; }
+  .rec-title { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+  .rec-body { font-size: 13px; color: var(--c-ink-soft); line-height: 1.6; }
+
+  /* FOOTER */
+  .footer { background: #0D3B16; color: rgba(244,246,242,0.45); padding: 2rem 4rem; font-size: 12px; font-family: var(--font-mono); display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
+
+  @media (max-width: 640px) {
+    .cover { padding: 2.5rem 1.5rem; }
+    .cover-title { font-size: 2rem; }
+    .chart-grid-2 { grid-template-columns: 1fr; }
+    .rec-grid { grid-template-columns: 1fr; }
+    .footer { padding: 1.5rem; flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- PORTADA -->
+<div class="cover">
+  <div class="cover-inner">
+    <div class="cover-logos">
+      <img src="data:image/png;base64,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" alt="I.U. Colegio Mayor de Antioquia" style="height:60px;width:auto;">
+      <div class="cover-logo-sep"></div>
+      <div>
+        <div class="cover-wordmark-title">EMVARIAS</div>
+        <div class="cover-wordmark-sub">Grupo EPM · S.A. E.S.P.</div>
+      </div>
+      <div class="cover-logo-sep"></div>
+      <div>
+        <div class="cover-wordmark-title">Interventoría</div>
+        <div class="cover-wordmark-sub">Área de Servicios de Aseo</div>
+      </div>
+    </div>
+    <div class="cover-label">Informe técnico de verificación operativa en pos-operación</div>
+    <div class="cover-title">Informe Operativo<br><em>Zona 4</em></div>
+    <div class="cover-subtitle">Verificación de calidad del servicio de limpieza vial — Rutas de bloque y frecuencias diarias LAS</div>
+    <div class="cover-meta">
+      <div><div class="meta-label">Período</div><div class="meta-val">6 al 11 de abril de 2026</div></div>
+      <div><div class="meta-label">Rutas verificadas</div><div class="meta-val">269 rutas (pos-operación)</div></div>
+      <div><div class="meta-label">Hora de inicio</div><div class="meta-val">1:00 PM (cada jornada)</div></div>
+      <div><div class="meta-label">Contratista</div><div class="meta-val">FUNTRAEV</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav class="nav-bar">
+  <div class="nav-inner">
+    <a href="#resumen"         class="nav-link active">Resumen</a>
+    <a href="#novedades"       class="nav-link">Novedades</a>
+    <a href="#jornadas"        class="nav-link">Jornadas</a>
+    <a href="#subsanacion"     class="nav-link">Subsanación</a>
+    <a href="#conclusiones"    class="nav-link">Conclusiones</a>
+    <a href="#recomendaciones" class="nav-link">Recomendaciones</a>
+  </div>
+</nav>
+
+<!-- 1. RESUMEN -->
+<div id="resumen" class="section">
+  <div class="wrapper">
+    <div class="section-header">
+      <div class="section-eyebrow">01 — Resumen ejecutivo</div>
+      <div class="section-title">Resultados globales de cumplimiento</div>
+      <div class="section-desc">Análisis integral de las 269 rutas inspeccionadas durante tres jornadas operativas consecutivas en la Zona 4 de Medellín — período 6 al 11 de abril de 2026.</div>
+    </div>
+    <div class="kpi-grid">
+      <div class="kpi-card blue"><div class="kpi-label">Total inspeccionadas</div><div class="kpi-value blue">269</div><div class="kpi-sub">3 jornadas · 3 frecuencias</div></div>
+      <div class="kpi-card green"><div class="kpi-label">Rutas conformes</div><div class="kpi-value green">154</div><div class="kpi-sub">57.25% del total</div></div>
+      <div class="kpi-card red"><div class="kpi-label">Rutas no conformes</div><div class="kpi-value red">115</div><div class="kpi-sub">42.75% del total</div></div>
+      <div class="kpi-card amber"><div class="kpi-label">Corrección en jornada</div><div class="kpi-value amber">6.1%</div><div class="kpi-sub">13 de 213 novedades</div></div>
+      <div class="kpi-card red"><div class="kpi-label">Pendientes al cierre</div><div class="kpi-value red">36</div><div class="kpi-sub">Con requerimiento formal</div></div>
+    </div>
+    <div class="chart-grid-2">
+      <div class="chart-card">
+        <div class="chart-title">Conformidad global — 269 rutas</div>
+        <div class="legend">
+          <span class="legend-item"><span class="legend-swatch" style="background:var(--c-green)"></span>Conformes (57.25%)</span>
+          <span class="legend-item"><span class="legend-swatch" style="background:var(--c-red)"></span>No conformes (42.75%)</span>
+        </div>
+        <div style="position:relative;height:220px;"><canvas id="pieGlobal"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Rutas con novedad por jornada</div>
+        <div class="legend">
+          <span class="legend-item"><span class="legend-swatch" style="background:var(--c-red)"></span>Con novedad</span>
+          <span class="legend-item"><span class="legend-swatch" style="background:var(--c-green)"></span>Sin novedad</span>
+        </div>
+        <div style="position:relative;height:220px;"><canvas id="barJornadas"></canvas></div>
+      </div>
+    </div>
+    <div class="insights">
+      <div class="insight critical"><span class="insight-icon">⚑</span><span><strong>213 novedades registradas</strong> en 3 jornadas. Solo 13 fueron corregidas en campo (6.1%). El 93.9% restante quedó pendiente de subsanación en siguiente frecuencia.</span></div>
+      <div class="insight warning"><span class="insight-icon">◈</span><span><strong>36 rutas con requerimiento formal:</strong> Al no ser subsanadas dentro de los plazos del ANS, quedaron sujetas a mecanismos de descuento contractual por incumplimiento en la oportunidad de corrección.</span></div>
+      <div class="insight positive"><span class="insight-icon">✓</span><span>La jornada del 8/04 registró el menor porcentaje de no conformidad (30.53%), con mejoría progresiva frente al 63.01% del 6/04.</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- 2. NOVEDADES -->
+<div id="novedades" class="section">
+  <div class="wrapper">
+    <div class="section-header">
+      <div class="section-eyebrow">02 — Análisis de novedades</div>
+      <div class="section-title">Hallazgos por tipo de incumplimiento</div>
+      <div class="section-desc">Consolidado de 213 registros de novedad detectados en las tres jornadas, agrupados por categoría técnica.</div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Total novedades detectadas vs. corregidas en jornada</div>
+      <div class="legend">
+        <span class="legend-item"><span class="legend-swatch" style="background:var(--c-chart-1)"></span>Detectadas</span>
+        <span class="legend-item"><span class="legend-swatch" style="background:var(--c-chart-6)"></span>Corregidas</span>
+      </div>
+      <div style="position:relative;height:260px;"><canvas id="barNovedades"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Prevalencia por categoría técnica — consolidado 269 rutas</div>
+      <div class="nov-row">
+        <span class="nov-tag">Espartillo</span>
+        <div class="nov-bar-wrap"><div class="nov-bar-fill" style="width:25.6%;background:var(--c-red)"></div></div>
+        <span class="nov-pct">69 casos</span>
+        <span class="nov-corr">✓ 2 corregidas</span>
+      </div>
+      <div class="nov-row">
+        <span class="nov-tag">Hojarasca</span>
+        <div class="nov-bar-wrap"><div class="nov-bar-fill" style="width:20.1%;background:var(--c-amber)"></div></div>
+        <span class="nov-pct">54 casos</span>
+        <span class="nov-corr">✓ 1 corregida</span>
+      </div>
+      <div class="nov-row">
+        <span class="nov-tag">Barrido superficial</span>
+        <div class="nov-bar-wrap"><div class="nov-bar-fill" style="width:18.2%;background:var(--c-chart-1)"></div></div>
+        <span class="nov-pct">49 casos</span>
+        <span class="nov-corr">✓ 5 corregidas</span>
+      </div>
+      <div class="nov-row">
+        <span class="nov-tag">Cordoneo</span>
+        <div class="nov-bar-wrap"><div class="nov-bar-fill" style="width:6.7%;background:#8B7EDB"></div></div>
+        <span class="nov-pct">18 casos</span>
+        <span class="nov-corr">✓ 1 corregida</span>
+      </div>
+      <div class="nov-row">
+        <span class="nov-tag">Cestas sin evacuar</span>
+        <div class="nov-bar-wrap"><div class="nov-bar-fill" style="width:5.6%;background:#888"></div></div>
+        <span class="nov-pct">15 casos</span>
+        <span class="nov-corr">✓ 3 corregidas</span>
+      </div>
+      <div class="nov-row">
+        <span class="nov-tag">ZV Cargadas</span>
+        <div class="nov-bar-wrap"><div class="nov-bar-fill" style="width:3%;background:var(--c-green)"></div></div>
+        <span class="nov-pct">8 casos</span>
+        <span class="nov-corr">✓ 1 corregida</span>
+      </div>
+    </div>
+    <div class="chart-grid-2">
+      <div class="chart-card">
+        <div class="chart-title">Distribución por tipo de novedad</div>
+        <div style="position:relative;height:240px;"><canvas id="pieNovedades"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Tasa de corrección inmediata por tipo (%)</div>
+        <div style="position:relative;height:240px;"><canvas id="barCorrPct"></canvas></div>
+      </div>
+    </div>
+    <div class="insights">
+      <div class="insight critical"><span class="insight-icon">⚑</span><span><strong>Espartillo (69 casos) + Hojarasca (54 casos)</strong> concentran el 57.7% de todas las novedades — residuos vegetales que requieren labores de detalle que el operario omite para cubrir distancia.</span></div>
+      <div class="insight warning"><span class="insight-icon">◈</span><span><strong>Barrido superficial al 18.2%</strong> confirma patrón de recorrido rápido sin ejecución técnica completa. La tasa de corrección inmediata fue de apenas el 10.2% para esta categoría.</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- 3. JORNADAS -->
+<div id="jornadas" class="section">
+  <div class="wrapper">
+    <div class="section-header">
+      <div class="section-eyebrow">03 — Detalle por jornada</div>
+      <div class="section-title">Resultados día a día</div>
+      <div class="section-desc">Desempeño individual de cada jornada operativa con métricas de conformidad y corrección.</div>
+    </div>
+
+    <div class="day-tabs">
+      <button class="day-tab active" onclick="switchDay('d06', this)">06/04 — Lun–Jue</button>
+      <button class="day-tab"        onclick="switchDay('d07', this)">07/04 — Mar–Vie</button>
+      <button class="day-tab"        onclick="switchDay('d08', this)">08/04 — Mié–Sáb</button>
+    </div>
+
+    <!-- 06/04 -->
+    <div id="day-d06" class="day-panel active">
+      <div class="kpi-grid" style="grid-template-columns:repeat(4,1fr);">
+        <div class="kpi-card blue"><div class="kpi-label">Rutas</div><div class="kpi-value blue" style="font-size:1.8rem">73</div><div class="kpi-sub">23 diarias + 50 Lun–Jue</div></div>
+        <div class="kpi-card green"><div class="kpi-label">Sin novedad</div><div class="kpi-value green" style="font-size:1.8rem">27</div><div class="kpi-sub">36.99%</div></div>
+        <div class="kpi-card red"><div class="kpi-label">Con novedad</div><div class="kpi-value red" style="font-size:1.8rem">46</div><div class="kpi-sub">63.01%</div></div>
+        <div class="kpi-card amber"><div class="kpi-label">Corregidas</div><div class="kpi-value amber" style="font-size:1.8rem">5</div><div class="kpi-sub">10.87% de 46</div></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Novedades 06/04 — Frecuencia Lunes–Jueves + Diarias</div>
+        <div class="nov-row"><span class="nov-tag">Espartillo</span><div class="nov-bar-wrap"><div class="nov-bar-fill" style="width:41.1%;background:var(--c-red)"></div></div><span class="nov-pct">41.09%</span><span class="nov-corr">✓ 2 recuperadas</span></div>
+        <div class="nov-row"><span class="nov-tag">Hojarasca</span><div class="nov-bar-wrap"><div class="nov-bar-fill" style="width:27.4%;background:var(--c-amber)"></div></div><span class="nov-pct">27.39%</span><span class="nov-corr">✗ 0 recuperadas</span></div>
+        <div class="nov-row"><span class="nov-tag">Barrido superficial</span><div class="nov-bar-wrap"><div class="nov-bar-fill" style="width:19.2%;background:var(--c-chart-1)"></div></div><span class="nov-pct">19.17%</span><span class="nov-corr">✓ 2 recuperadas</span></div>
+        <div class="nov-row"><span class="nov-tag">Cordoneo</span><div class="nov-bar-wrap"><div class="nov-bar-fill" style="width:9.6%;background:#8B7EDB"></div></div><span class="nov-pct">9.58%</span><span class="nov-corr">✗ 0 recuperadas</span></div>
+        <div class="nov-row"><span class="nov-tag">Cestas sin evacuar</span><div class="nov-bar-wrap"><div class="nov-bar-fill" style="width:9.6%;background:#888"></div></div><span class="nov-pct">9.58%</span><span class="nov-corr">✓ 1 recuperada</span></div>
+        <div class="nov-row"><span class="nov-tag">ZV Cargadas</span><div class="nov-bar-wrap"><div class="nov-bar-fill" style="width:4.1%;background:var(--c-green)"></div></div><span class="nov-pct">4.10%</span><span class="nov-corr">✗ 0 recuperadas</span></div>
+      </div>
+      <div class="insights">
+        <div class="insight critical"><span class="insight-icon">⚑</span><span>Espartillo al 41.09% es la novedad dominante del día — 30 de 73 rutas afectadas. Solo 2 recuperadas. 41 rutas quedan pendientes al cierre de la jornada.</span></div>
+      </div>
+    </div>
+
+    <!-- 07/04 -->
+    <div id="day-d07" class="day-panel">
+      <div class="kpi-grid" style="grid-template-columns:repeat(4,1fr);">
+        <div class="kpi-card blue"><div class="kpi-label">Rutas</div><div class="kpi-value blue" style="font-size:1.8rem">101</div><div class="kpi-sub">51 diarias + 50 Mar–Vie</div></div>
+        <div class="kpi-card green"><div class="kpi-label">Sin novedad</div><div class="kpi-value green" style="font-size:1.8rem">61</div><div class="kpi-sub">60.40%</div></div>
+        <div class="kpi-card red"><div class="kpi-label">Con novedad</div><div class="kpi-value red" style="font-size:1.8rem">40</div><div class="kpi-sub">39.60%</div></div>
+        <div class="kpi-card amber"><div class="kpi-label">Corregidas</div><div class="kpi-value amber" style="font-size:1.8rem">5</div><div class="kpi-sub">12.50% de 40</div></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Novedades 07/04 — Frecuencia Martes–Viernes + Diarias</div>
+        <div class="nov-row"><span class="nov-tag">Hojarasca</span><div class="nov-bar-wrap"><div class="nov-bar-fill" style="width:22.8%;background:var(--c-amber)"></div></div><span class="nov-pct">22.77%</span><span class="nov-corr">✓ 1 recuperada</span></div>
+        <div class="nov-row"><span class="nov-tag">Espartillo</span><div class="nov-bar-wrap"><div class="nov-bar-fill" style="width:20.8%;background:var(--c-red)"></div></div><span class="nov-pct">20.79%</span><span class="nov-corr">✗ 0 recuperadas</span></div>
+        <div class="nov-row"><span class="nov-tag">Barrido superficial</span><div class="nov-bar-wrap"><div class="nov-bar-fill" style="width:16.8%;background:var(--c-chart-1)"></div></div><span class="nov-pct">16.83%</span><span class="nov-corr">✓ 3 recuperadas</span></div>
+        <div class="nov-row"><span class="nov-tag">Cordoneo</span><div class="nov-bar-wrap"><div class="nov-bar-fill" style="width:7.9%;background:#8B7EDB"></div></div><span class="nov-pct">7.92%</span><span class="nov-corr">✗ 0 recuperadas</span></div>
+        <div class="nov-row"><span class="nov-tag">Cestas sin evacuar</span><div class="nov-bar-wrap"><div class="nov-bar-fill" style="width:4%;background:#888"></div></div><span class="nov-pct">3.96%</span><span class="nov-corr">✗ 0 recuperadas</span></div>
+        <div class="nov-row"><span class="nov-tag">ZV Cargadas</span><div class="nov-bar-wrap"><div class="nov-bar-fill" style="width:3%;background:var(--c-green)"></div></div><span class="nov-pct">2.97%</span><span class="nov-corr">✓ 1 recuperada</span></div>
+      </div>
+      <div class="insights">
+        <div class="insight positive"><span class="insight-icon">✓</span><span>Mejor jornada en términos de conformidad: 60.40% de rutas sin novedad. Sin embargo, 87.50% de las novedades detectadas quedaron sin subsanar.</span></div>
+      </div>
+    </div>
+
+    <!-- 08/04 -->
+    <div id="day-d08" class="day-panel">
+      <div class="kpi-grid" style="grid-template-columns:repeat(4,1fr);">
+        <div class="kpi-card blue"><div class="kpi-label">Rutas</div><div class="kpi-value blue" style="font-size:1.8rem">95</div><div class="kpi-sub">45 diarias + 50 Mié–Sáb</div></div>
+        <div class="kpi-card green"><div class="kpi-label">Sin novedad</div><div class="kpi-value green" style="font-size:1.8rem">66</div><div class="kpi-sub">69.47%</div></div>
+        <div class="kpi-card red"><div class="kpi-label">Con novedad</div><div class="kpi-value red" style="font-size:1.8rem">29</div><div class="kpi-sub">30.53%</div></div>
+        <div class="kpi-card red"><div class="kpi-label">Corregidas</div><div class="kpi-value red" style="font-size:1.8rem">3</div><div class="kpi-sub">3.45% de 29 — Crítico</div></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Novedades 08/04 — Frecuencia Miércoles–Sábado + Diarias</div>
+        <div class="nov-row"><span class="nov-tag">Barrido superficial</span><div class="nov-bar-wrap"><div class="nov-bar-fill" style="width:18.9%;background:var(--c-chart-1)"></div></div><span class="nov-pct">18.94%</span><span class="nov-corr">✓ 1 recuperada</span></div>
+        <div class="nov-row"><span class="nov-tag">Espartillo</span><div class="nov-bar-wrap"><div class="nov-bar-fill" style="width:18.9%;background:var(--c-red)"></div></div><span class="nov-pct">18.94%</span><span class="nov-corr">✗ 0 recuperadas</span></div>
+        <div class="nov-row"><span class="nov-tag">Hojarasca</span><div class="nov-bar-wrap"><div class="nov-bar-fill" style="width:11.6%;background:var(--c-amber)"></div></div><span class="nov-pct">11.57%</span><span class="nov-corr">✗ 0 recuperadas</span></div>
+        <div class="nov-row"><span class="nov-tag">Cestas sin evacuar</span><div class="nov-bar-wrap"><div class="nov-bar-fill" style="width:4.2%;background:#888"></div></div><span class="nov-pct">4.21%</span><span class="nov-corr">✓ 1 recuperada</span></div>
+        <div class="nov-row"><span class="nov-tag">Cordoneo</span><div class="nov-bar-wrap"><div class="nov-bar-fill" style="width:3.2%;background:#8B7EDB"></div></div><span class="nov-pct">3.15%</span><span class="nov-corr">✓ 1 recuperada</span></div>
+        <div class="nov-row"><span class="nov-tag">ZV Cargadas</span><div class="nov-bar-wrap"><div class="nov-bar-fill" style="width:2.1%;background:var(--c-green)"></div></div><span class="nov-pct">2.10%</span><span class="nov-corr">✗ 0 recuperadas</span></div>
+      </div>
+      <div class="insights">
+        <div class="insight critical"><span class="insight-icon">⚑</span><span>Solo 3 de 29 rutas con novedad fueron corregidas (3.45%) — la peor tasa de respuesta inmediata de la semana. 96.55% quedó sin atender.</span></div>
+        <div class="insight warning"><span class="insight-icon">◈</span><span>Empate Barrido superficial / Espartillo al 18.94% — patrón de ruta partida confirmado en esta frecuencia.</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 4. SUBSANACIÓN -->
+<div id="subsanacion" class="section">
+  <div class="wrapper">
+    <div class="section-header">
+      <div class="section-eyebrow">04 — Seguimiento de subsanación</div>
+      <div class="section-title">Cierre del ciclo operativo</div>
+      <div class="section-desc">De las 200 novedades pendientes al cierre de las 3 jornadas, 177 fueron subsanadas en las frecuencias siguientes. 36 quedaron sin corregir y activaron requerimiento formal.</div>
+    </div>
+    <div class="kpi-grid" style="grid-template-columns:repeat(4,1fr);">
+      <div class="kpi-card red"><div class="kpi-label">Novedades totales</div><div class="kpi-value red">213</div><div class="kpi-sub">3 jornadas</div></div>
+      <div class="kpi-card amber"><div class="kpi-label">Corregidas en jornada</div><div class="kpi-value amber">13</div><div class="kpi-sub">6.1%</div></div>
+      <div class="kpi-card green"><div class="kpi-label">Subsanadas en frecuencia</div><div class="kpi-value green">177</div><div class="kpi-sub">88.5% de las pendientes</div></div>
+      <div class="kpi-card red"><div class="kpi-label">Con requerimiento</div><div class="kpi-value red">36</div><div class="kpi-sub">Incumplimiento ANS</div></div>
+    </div>
+    <div class="chart-grid-2">
+      <div class="chart-card">
+        <div class="chart-title">Flujo de gestión de novedades</div>
+        <div style="position:relative;height:240px;"><canvas id="barFlujo"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Evolución conformidad por jornada</div>
+        <div style="position:relative;height:240px;"><canvas id="lineConformidad"></canvas></div>
+      </div>
+    </div>
+    <div class="chart-card" style="overflow:auto;">
+      <div class="chart-title">Tabla consolidada de novedades por jornada</div>
+      <table class="subs-table">
+        <thead>
+          <tr>
+            <th>Novedad</th>
+            <th>06/04</th>
+            <th>07/04</th>
+            <th>08/04</th>
+            <th>Total detectadas</th>
+            <th>Corregidas en jornada</th>
+            <th>Pendientes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Espartillo</td><td>30</td><td>21</td><td>18</td><td><strong>69</strong></td><td style="color:var(--c-green);font-weight:600;">2</td><td class="pct-cell red">67</td></tr>
+          <tr><td>Hojarasca</td><td>20</td><td>23</td><td>11</td><td><strong>54</strong></td><td style="color:var(--c-green);font-weight:600;">1</td><td class="pct-cell red">53</td></tr>
+          <tr><td>Barrido superficial</td><td>14</td><td>17</td><td>18</td><td><strong>49</strong></td><td style="color:var(--c-green);font-weight:600;">5</td><td class="pct-cell red">44</td></tr>
+          <tr><td>Cordoneo</td><td>7</td><td>8</td><td>3</td><td><strong>18</strong></td><td style="color:var(--c-green);font-weight:600;">1</td><td class="pct-cell amber">17</td></tr>
+          <tr><td>Cestas sin evacuar</td><td>7</td><td>4</td><td>4</td><td><strong>15</strong></td><td style="color:var(--c-green);font-weight:600;">3</td><td class="pct-cell amber">12</td></tr>
+          <tr><td>ZV Cargadas</td><td>3</td><td>3</td><td>2</td><td><strong>8</strong></td><td style="color:var(--c-green);font-weight:600;">1</td><td class="pct-cell amber">7</td></tr>
+          <tr style="background:var(--c-bg);font-weight:600;">
+            <td><strong>TOTAL</strong></td><td><strong>81</strong></td><td><strong>76</strong></td><td><strong>56</strong></td>
+            <td><strong>213</strong></td>
+            <td style="color:var(--c-green);font-weight:700;">13</td>
+            <td class="pct-cell red"><strong>200</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="insights">
+      <div class="insight critical"><span class="insight-icon">⚑</span><span><strong>200 novedades sin corregir al cierre de las jornadas.</strong> Aunque 177 fueron subsanadas en frecuencias posteriores, <strong>36 superaron el plazo de ANS</strong> y generaron requerimiento formal por incumplimiento.</span></div>
+      <div class="insight warning"><span class="insight-icon">◈</span><span>La tasa de corrección inmediata del 6.1% refleja ausencia de supervisión activa del contratista durante la ejecución del servicio.</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- 5. CONCLUSIONES -->
+<div id="conclusiones" class="section">
+  <div class="wrapper">
+    <div class="section-header">
+      <div class="section-eyebrow">05 — Conclusiones técnicas</div>
+      <div class="section-title">Diagnóstico operativo integral</div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Indicadores de desempeño — semana 6–8 abril 2026</div>
+      <div style="position:relative;height:300px;"><canvas id="radarConclusion"></canvas></div>
+    </div>
+    <div class="insights">
+      <div class="insight critical"><span class="insight-icon">⚑</span><span><strong>42.75% de no conformidad global</strong> (115 rutas). Aunque menor al porcentaje registrado en Zona 6, evidencia una deficiencia sistemática en la calidad de ejecución del PPS.</span></div>
+      <div class="insight critical"><span class="insight-icon">⚑</span><span><strong>Residuos vegetales como falla estructural:</strong> Espartillo (69) + Hojarasca (54) concentran el 57.7% de las novedades, indicando que el operario no realiza labores de detalle ni repaso en zonas arborizadas.</span></div>
+      <div class="insight warning"><span class="insight-icon">◈</span><span><strong>Baja capacidad de respuesta:</strong> Con solo el 6.1% de corrección en jornada, el contratista FUNTRAEV no dispone de cuadrillas de reacción suficientes para atender contingencias sin comprometer la operación corriente.</span></div>
+      <div class="insight warning"><span class="insight-icon">◈</span><span><strong>36 rutas con requerimiento formal</strong> confirman que el contratista no cumplió los plazos de subsanación del ANS en un volumen significativo de rutas, lo que activa los mecanismos de descuento contractual.</span></div>
+      <div class="insight positive"><span class="insight-icon">✓</span><span>Tendencia positiva en la jornada del 8/04 con solo 30.53% de no conformidad — sugiere que la frecuencia Miércoles–Sábado muestra menor incidencia de novedades en comparación con las otras dos.</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- 6. RECOMENDACIONES -->
+<div id="recomendaciones" class="section">
+  <div class="wrapper">
+    <div class="section-header">
+      <div class="section-eyebrow">06 — Recomendaciones y requerimientos</div>
+      <div class="section-title">Acciones correctivas exigidas<br>al contratista FUNTRAEV</div>
+    </div>
+    <div class="rec-grid">
+      <div class="rec-card">
+        <div class="rec-num">01</div>
+        <div class="rec-title">Atención inmediata a novedades pendientes</div>
+        <div class="rec-body">Presentar plan urgente para resolver las 36 rutas con requerimiento formal. El contratista debe demostrar corrección efectiva dentro de los plazos establecidos en el contrato.</div>
+      </div>
+      <div class="rec-card">
+        <div class="rec-num">02</div>
+        <div class="rec-title">Protocolo específico para residuos vegetales</div>
+        <div class="rec-body">Implementar protocolo de remoción de espartillo y hojarasca que incluya repaso en zonas arborizadas y uso de sopladores mecánicos. Esta doble falla representa el 57.7% de las novedades.</div>
+      </div>
+      <div class="rec-card">
+        <div class="rec-num">03</div>
+        <div class="rec-title">Cuadrillas de reacción (pronteo)</div>
+        <div class="rec-body">Disponer de cuadrillas dedicadas a corrección en tiempo real durante las jornadas. La corrección inmediata del 6.1% es insuficiente y genera acumulación de novedades.</div>
+      </div>
+      <div class="rec-card">
+        <div class="rec-num">04</div>
+        <div class="rec-title">Supervisión efectiva en campo</div>
+        <div class="rec-body">Las novedades detectadas son visualmente evidentes antes de la pos-operación. Se exige presencia de supervisores del contratista con capacidad de corrección en tiempo real.</div>
+      </div>
+      <div class="rec-card">
+        <div class="rec-num">05</div>
+        <div class="rec-title">Seguimiento diario de novedades</div>
+        <div class="rec-body">Implementar control interno diario de novedades reportadas y verificación de su corrección, evitando que las mismas fallas se repitan en jornadas sucesivas.</div>
+      </div>
+      <div class="rec-card">
+        <div class="rec-num">06</div>
+        <div class="rec-title">Aplicación de descuentos ANS</div>
+        <div class="rec-body">Las 36 rutas con requerimiento superaron los plazos de corrección. Se activarán los mecanismos de descuento por Incumplimiento en la Oportunidad de Corrección bajo el contrato vigente.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div>
+    <div>Interventoría del Área de Servicios de Aseo</div>
+    <div style="margin-top:3px;color:rgba(244,246,242,0.3)">EMVARIAS S.A. E.S.P. — Medellín, Colombia</div>
+  </div>
+  <div style="text-align:right;">
+    <div>Período: 6 al 11 de abril de 2026</div>
+    <div style="margin-top:3px;color:rgba(244,246,242,0.3)">Zona 4 · Contratista: FUNTRAEV</div>
+  </div>
+</div>
+
+<script>
+function switchDay(id, btn) {
+  document.querySelectorAll('.day-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.day-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('day-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// Nav highlight on scroll
+const sections = document.querySelectorAll('.section[id]');
+const navLinks  = document.querySelectorAll('.nav-link');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navLinks.forEach(l => l.classList.remove('active'));
+      const lnk = document.querySelector(`.nav-link[href="#${e.target.id}"]`);
+      if (lnk) lnk.classList.add('active');
+    }
+  });
+}, { threshold: 0.3 });
+sections.forEach(s => obs.observe(s));
+
+const g1 = '#1A6B2F', g2 = '#E8620A', g3 = '#2E8B45', g4 = '#FF8C38';
+const purple = '#8B7EDB', muted = '#8A9E8B', grid = 'rgba(26,65,30,0.08)', lbl = '#8A9E8B';
+Chart.defaults.color = lbl;
+Chart.defaults.borderColor = grid;
+
+new Chart(document.getElementById('pieGlobal'), {
+  type: 'doughnut',
+  data: { labels: ['Conformes (154)', 'No conformes (115)'],
+    datasets: [{ data: [154, 115], backgroundColor: [g1, g2], borderWidth: 2, borderColor: '#FAFCF8', hoverOffset: 6 }] },
+  options: { responsive: true, maintainAspectRatio: false, cutout: '62%',
+    plugins: { legend: { position: 'bottom', labels: { font: { size: 11 }, boxWidth: 10, padding: 16 } } } }
+});
+
+new Chart(document.getElementById('barJornadas'), {
+  type: 'bar',
+  data: { labels: ['06/04 (73)', '07/04 (101)', '08/04 (95)'],
+    datasets: [
+      { label: 'Con novedad', data: [46, 40, 29], backgroundColor: g2, borderRadius: 4 },
+      { label: 'Sin novedad', data: [27, 61, 66], backgroundColor: g1, borderRadius: 4 }
+    ] },
+  options: { responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom', labels: { font: { size: 11 }, boxWidth: 10 } } },
+    scales: { x: { stacked: true }, y: { stacked: true, beginAtZero: true } } }
+});
+
+new Chart(document.getElementById('barNovedades'), {
+  type: 'bar',
+  data: { labels: ['Espartillo', 'Hojarasca', 'Barrido', 'Cordoneo', 'Cestas', 'ZV Cargadas'],
+    datasets: [
+      { label: 'Detectadas', data: [69, 54, 49, 18, 15, 8], backgroundColor: g1, borderRadius: 4 },
+      { label: 'Corregidas', data: [2, 1, 5, 1, 3, 1],     backgroundColor: g4, borderRadius: 4 }
+    ] },
+  options: { responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom', labels: { font: { size: 11 }, boxWidth: 10 } } },
+    scales: { x: { ticks: { font: { size: 11 } } }, y: { beginAtZero: true } } }
+});
+
+new Chart(document.getElementById('pieNovedades'), {
+  type: 'doughnut',
+  data: { labels: ['Espartillo (69)', 'Hojarasca (54)', 'Barrido (49)', 'Cordoneo (18)', 'Cestas (15)', 'ZV (8)'],
+    datasets: [{ data: [69, 54, 49, 18, 15, 8],
+      backgroundColor: [g2, '#C0580A', g1, purple, muted, g3], borderWidth: 0 }] },
+  options: { responsive: true, maintainAspectRatio: false, cutout: '55%',
+    plugins: { legend: { position: 'bottom', labels: { font: { size: 10 }, boxWidth: 10, padding: 10 } } } }
+});
+
+new Chart(document.getElementById('barCorrPct'), {
+  type: 'bar',
+  data: { labels: ['Cestas', 'Barrido', 'Cordoneo', 'ZV', 'Hojarasca', 'Espartillo'],
+    datasets: [{ label: '% corregido', data: [20, 10.2, 5.6, 12.5, 1.9, 2.9],
+      backgroundColor: [g1, g1, '#C0580A', '#C0580A', g2, g2], borderRadius: 4 }] },
+  options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: { x: { min: 0, max: 25, ticks: { callback: v => v + '%', font: { size: 11 } } } } }
+});
+
+new Chart(document.getElementById('barFlujo'), {
+  type: 'bar',
+  data: { labels: ['Detectadas', 'Corregidas\nen jornada', 'Subsanadas\nen frecuencia', 'Con requerimiento\nformal'],
+    datasets: [{ data: [213, 13, 177, 36],
+      backgroundColor: [g1, g4, g3, g2], borderRadius: 4 }] },
+  options: { responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: { y: { beginAtZero: true } } }
+});
+
+new Chart(document.getElementById('lineConformidad'), {
+  type: 'line',
+  data: { labels: ['06/04', '07/04', '08/04'],
+    datasets: [
+      { label: '% No conforme', data: [63.01, 39.60, 30.53], borderColor: g2,
+        backgroundColor: 'rgba(232,98,10,0.08)', pointBackgroundColor: g2, pointRadius: 6, tension: 0.3, fill: true },
+      { label: 'Objetivo (<15%)', data: [15, 15, 15], borderColor: g1, borderDash: [5,5], pointRadius: 0, fill: false }
+    ] },
+  options: { responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom', labels: { font: { size: 11 }, boxWidth: 10 } } },
+    scales: { y: { min: 0, max: 80, ticks: { callback: v => v + '%', font: { size: 11 } } } } }
+});
+
+new Chart(document.getElementById('radarConclusion'), {
+  type: 'radar',
+  data: { labels: ['Conformidad inicial', 'Corrección inmediata', 'Subsanación en frecuencia', 'Cobertura operativa', 'Calidad técnica'],
+    datasets: [
+      { label: 'Desempeño real (%)', data: [57.25, 6.1, 88.5, 100, 45],
+        backgroundColor: 'rgba(232,98,10,0.12)', borderColor: g2, pointBackgroundColor: g2, pointRadius: 4 },
+      { label: 'Estándar PPS (mínimo)', data: [85, 50, 95, 100, 85],
+        backgroundColor: 'rgba(26,107,47,0.06)', borderColor: g1, borderDash: [4,4], pointBackgroundColor: g1, pointRadius: 4 }
+    ] },
+  options: { responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom', labels: { font: { size: 11 }, boxWidth: 10 } } },
+    scales: { r: { min: 0, max: 100, ticks: { stepSize: 25, font: { size: 10 }, backdropColor: 'transparent' },
+      pointLabels: { font: { size: 11 }, color: lbl }, grid: { color: grid } } } }
+});
+</script>
+</body>
+</html>
