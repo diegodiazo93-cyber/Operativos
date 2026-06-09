@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Informe Recargos de Ruta 2026 — EMVARIAS S.A. E.S.P.</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+<style>
+:root {
+  --o: #EE7402; --o2: #F58B25; --o3: #FDF0E2; --o4: #FEF7EE;
+  --g: #93D500; --g2: #7AB800; --g3: #EEF8D0;
+  --dk: #1A1A1A; --dk2: #2D2D2D; --gr: #7C7C7B;
+  --gr2: #C6C6C6; --gr3: #F5F5F5; --gr4: #FAFAFA;
+  --w: #FFFFFF; --borde: #E8E8E8;
+  --font: 'Montserrat', Arial, sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--font); background: var(--gr3); color: var(--dk); font-size: 13px; }
+
+/* ── HEADER ── */
+.site-header {
+  background: var(--o);
+  padding: 0;
+  position: sticky; top: 0; z-index: 200;
+  box-shadow: 0 4px 16px rgba(238,116,2,.35);
+}
+.header-top {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: .75rem 2rem; border-bottom: 1px solid rgba(255,255,255,.25);
+}
+.logo-area { display: flex; align-items: center; gap: 14px; }
+.logo-badge {
+  background: rgba(255,255,255,.2); color: var(--w);
+  font-size: 15px; font-weight: 800; padding: 5px 12px;
+  border-radius: 3px; letter-spacing: -.2px; border: 1px solid rgba(255,255,255,.35);
+}
+.logo-badge span { color: rgba(255,255,255,.7); }
+.logo-text { }
+.logo-text .org { font-size: 12px; font-weight: 700; color: var(--w); text-shadow: 0 1px 2px rgba(0,0,0,.15); }
+.logo-text .sub { font-size: 9px; color: rgba(255,255,255,.8); font-weight: 400; letter-spacing: .04em; }
+.header-meta { font-size: 10px; color: rgba(255,255,255,.85); font-weight: 500; text-align: right; line-height: 1.6; }
+.header-meta strong { color: var(--w); font-weight: 700; }
+
+/* ── TABS ── */
+.tabs-bar {
+  background: rgba(0,0,0,.18);
+  display: flex; overflow-x: auto; gap: 0;
+  scrollbar-width: none;
+  backdrop-filter: brightness(.85);
+}
+.tabs-bar::-webkit-scrollbar { display: none; }
+.tab-btn {
+  flex-shrink: 0;
+  background: none; border: none; cursor: pointer;
+  font-family: var(--font); font-size: 10px; font-weight: 600;
+  letter-spacing: .06em; text-transform: uppercase;
+  color: rgba(255,255,255,.7); padding: .7rem 1.4rem;
+  border-bottom: 3px solid transparent;
+  transition: all .18s; white-space: nowrap;
+}
+.tab-btn:hover { color: var(--w); background: rgba(255,255,255,.15); }
+.tab-btn.active { color: var(--w); border-bottom-color: var(--w); background: rgba(255,255,255,.18); font-weight: 700; }
+
+/* ── SECTIONS ── */
+.section { display: none; }
+.section.active { display: block; }
+
+/* ── COVER SECTION ── */
+.cover-hero {
+  background: var(--g);
+  display: grid; grid-template-columns: 1fr 1fr;
+  min-height: 320px; overflow: hidden; position: relative;
+}
+.cover-deco-r {
+  position: absolute; top: 0; right: 0;
+  width: 50%; height: 100%; background: rgba(0,0,0,.1);
+  clip-path: polygon(18% 0, 100% 0, 100% 100%, 0 100%);
+}
+.cover-deco-r2 {
+  position: absolute; top: 0; right: 0;
+  width: 50%; height: 100%; background: rgba(255,255,255,.08);
+  clip-path: polygon(30% 0, 100% 0, 100% 100%, 12% 100%);
+  opacity: 1;
+}
+.cover-deco-circle {
+  position: absolute; border-radius: 50%;
+  border: 2px solid rgba(255,255,255,.1);
+}
+.cover-left {
+  padding: 2.5rem 2.5rem; position: relative; z-index: 2;
+  display: flex; flex-direction: column; justify-content: center;
+}
+.cover-eyebrow {
+  font-size: 9px; font-weight: 700; letter-spacing: .16em;
+  text-transform: uppercase; color: rgba(255,255,255,.85);
+  display: flex; align-items: center; gap: 8px; margin-bottom: 12px;
+}
+.cover-eyebrow::before { content:''; width: 22px; height: 2px; background: rgba(255,255,255,.7); border-radius: 2px; }
+.cover-h1 {
+  font-size: clamp(28px, 3.5vw, 44px); font-weight: 800;
+  color: var(--w); line-height: 1.1; margin-bottom: 12px;
+}
+.cover-h1 .hl { color: var(--w); }
+.cover-desc { font-size: 12px; color: rgba(255,255,255,.85); line-height: 1.75; margin-bottom: 20px; max-width: 420px; }
+.cover-chips { display: flex; flex-wrap: wrap; gap: 7px; }
+.cchip {
+  font-size: 9px; font-weight: 700; padding: 4px 11px;
+  border-radius: 3px; letter-spacing: .04em;
+}
+.cchip-o { background: var(--o); color: var(--w); }
+.cchip-fudea { background: var(--o); color: var(--w); border: 2px solid var(--o); }
+.cchip-funtraev { background: var(--o); color: var(--w); border: 2px solid var(--o); }
+.cchip-g { background: var(--g2); color: var(--w); }
+.cchip-dk { background: rgba(255,255,255,.25); color: var(--w); border: 1px solid rgba(255,255,255,.5); }
+.cover-right {
+  position: relative; z-index: 2;
+  display: flex; flex-direction: column; justify-content: center;
+  align-items: center; padding: 2.5rem; gap: 12px;
+}
+.stat-box {
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.2);
+  border-radius: 6px; padding: 1.1rem 1.5rem;
+  width: 100%; backdrop-filter: blur(4px);
+}
+.stat-box .s-lbl { font-size: 9px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.65); margin-bottom: 5px; }
+.stat-box .s-val { font-size: 30px; font-weight: 800; color: var(--w); line-height: 1; }
+.stat-box .s-sub { font-size: 9px; color: rgba(255,255,255,.6); margin-top: 3px; }
+.stat-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
+.stat-sm { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.15); border-radius: 5px; padding: .9rem 1rem; }
+.stat-sm .s-val { font-size: 22px; }
+
+/* ── CONTAINER ── */
+.container { max-width: 1280px; margin: 0 auto; padding: 2rem 2rem 3rem; }
+
+/* ── SECTION HEADER ── */
+.sec-hdr { margin-bottom: 1.5rem; }
+.sec-eyebrow {
+  font-size: 9px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--o); display: flex; align-items: center; gap: 7px; margin-bottom: 6px;
+}
+.sec-eyebrow::before { content:''; width: 14px; height: 2px; background: var(--o); border-radius: 2px; }
+.sec-title { font-size: clamp(18px, 2.2vw, 24px); font-weight: 700; color: var(--dk); line-height: 1.2; }
+.sec-title .hl { color: var(--o); }
+.sec-title .hlg { color: var(--g2); }
+.sec-desc { font-size: 12px; color: var(--gr); margin-top: 6px; line-height: 1.6; }
+
+/* ── KPI GRID ── */
+.kpi-grid { display: grid; gap: 12px; margin-bottom: 1.5rem; }
+.kpi-4 { grid-template-columns: repeat(4, 1fr); }
+.kpi-3 { grid-template-columns: repeat(3, 1fr); }
+.kpi-2 { grid-template-columns: repeat(2, 1fr); }
+@media(max-width:900px){ .kpi-4,.kpi-3 { grid-template-columns: repeat(2, 1fr); } }
+.kpi {
+  background: var(--w); border: 1px solid var(--borde);
+  border-radius: 6px; padding: 1.1rem 1.1rem 1rem;
+  position: relative; overflow: hidden;
+}
+.kpi::before { content:''; position: absolute; left:0; top:0; bottom:0; width:4px; border-radius: 6px 0 0 6px; }
+.kpi.o::before { background: var(--o); } .kpi.g::before { background: var(--g2); } .kpi.dk::before { background: var(--dk2); }
+.kpi-icon { position: absolute; top:.9rem; right:.9rem; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+.kpi-icon.o { background: var(--o3); } .kpi-icon.g { background: var(--g3); } .kpi-icon.dk { background: var(--gr3); }
+.kpi-lbl { font-size: 9px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--gr); margin-bottom: 8px; line-height: 1.4; padding-right: 38px; }
+.kpi-val { font-size: 26px; font-weight: 800; line-height: 1; margin-bottom: 3px; }
+.kpi-val.o { color: var(--o); } .kpi-val.g { color: var(--g2); } .kpi-val.dk { color: var(--dk); }
+.kpi-sub { font-size: 9px; color: var(--gr); font-weight: 500; }
+
+/* ── CARD ── */
+.card { background: var(--w); border: 1px solid var(--borde); border-radius: 6px; padding: 1.25rem 1.4rem; margin-bottom: 1.25rem; }
+.card-hdr { font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--dk2); margin-bottom: 1rem; display: flex; align-items: center; gap: 7px; }
+.card-hdr .cdot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+/* ── GRID ── */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem; }
+.grid-6040 { display: grid; grid-template-columns: 1.5fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem; }
+@media(max-width:860px){ .grid-2,.grid-3,.grid-6040 { grid-template-columns: 1fr; } }
+
+/* ── CHART ── */
+.chart-container { position: relative; height: 280px; }
+.chart-container.tall { height: 340px; }
+.chart-container.sm { height: 200px; }
+.legend { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 10px; }
+.legend span { display: flex; align-items: center; gap: 5px; font-size: 10px; color: var(--dk2); font-weight: 500; }
+.legend b { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+
+/* ── TABLE ── */
+.table-wrap { overflow-x: auto; border-radius: 6px; border: 1px solid var(--borde); margin-bottom: 1.25rem; }
+table.t { width: 100%; border-collapse: collapse; font-size: 12px; table-layout: fixed; min-width: 700px; }
+table.t thead th { text-align: left; padding: 9px 14px; font-size: 9px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--gr); border-bottom: 2px solid var(--o); background: var(--gr4); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+table.t tbody tr:nth-child(even) td { background: var(--gr4); }
+table.t tbody tr:hover td { background: var(--o3); transition: background .12s; }
+table.t tbody td { padding: 8px 14px; border-bottom: 1px solid var(--borde); }
+table.t tfoot td { padding: 9px 14px; font-weight: 700; color: var(--o); border-top: 2px solid var(--o); background: var(--o4); }
+.tr { text-align: right; } .tc { text-align: center; }
+
+/* ── PILLS ── */
+.pill { font-size: 9px; font-weight: 700; padding: 2px 8px; border-radius: 3px; white-space: nowrap; }
+.pill-up { background: #D4EDDA; color: #155724; }
+.pill-dn { background: #FDE8D8; color: #7A3600; }
+.pill-ok { background: var(--g3); color: var(--g2); }
+.pill-wn { background: var(--o3); color: var(--o); }
+
+/* ── ALERT ── */
+.alert { background: var(--o4); border-left: 3px solid var(--o); border-radius: 0 5px 5px 0; padding: .75rem 1rem; font-size: 11px; color: #7A3600; margin-bottom: 1.25rem; display: flex; align-items: flex-start; gap: 8px; line-height: 1.6; }
+
+/* ── BARS ── */
+.bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.bar-lbl { font-size: 10px; color: var(--gr); width: 130px; flex-shrink: 0; font-weight: 500; line-height: 1.3; }
+.bar-track { flex: 1; height: 7px; background: var(--gr3); border-radius: 4px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 4px; }
+.bar-pct { font-size: 10px; font-weight: 700; color: var(--dk); width: 36px; text-align: right; flex-shrink: 0; }
+
+/* ── COMP ROWS ── */
+.comp-row { display: flex; align-items: center; padding: .75rem 0; border-bottom: 1px solid var(--borde); gap: 12px; }
+.comp-mes { font-size: 12px; font-weight: 700; width: 80px; flex-shrink: 0; }
+.comp-bars { flex: 1; display: flex; flex-direction: column; gap: 5px; }
+.comp-br { display: flex; align-items: center; gap: 8px; font-size: 10px; }
+.comp-lbl { width: 32px; font-weight: 600; }
+.comp-track { flex: 1; height: 7px; background: var(--gr3); border-radius: 4px; overflow: hidden; }
+
+/* ── HALLAZGOS ── */
+.hallazgo {
+  display: flex; gap: 12px; align-items: flex-start;
+  border: 1px solid var(--borde); border-left: 3px solid var(--borde);
+  border-radius: 6px; padding: 1rem 1.1rem; margin-bottom: 10px;
+  background: var(--w); transition: box-shadow .15s;
+}
+.hallazgo:hover { box-shadow: 0 2px 12px rgba(0,0,0,.08); }
+.hallazgo.o { border-left-color: var(--o); }
+.hallazgo.g { border-left-color: var(--g2); }
+.h-icon { width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+.h-icon.o { background: var(--o3); } .h-icon.g { background: var(--g3); }
+.h-title { font-size: 12px; font-weight: 700; margin-bottom: 4px; color: var(--dk); }
+.h-desc { font-size: 11px; color: var(--gr); line-height: 1.6; }
+
+/* ── TOGGLE ── */
+.toggle-bar { display: flex; gap: 8px; margin-bottom: 1rem; align-items: center; flex-wrap: wrap; }
+.btn-t { font-family: var(--font); font-size: 10px; font-weight: 700; padding: 5px 16px; border-radius: 3px; cursor: pointer; transition: all .15s; letter-spacing: .04em; }
+.btn-t.ao { border: 1.5px solid var(--o); background: var(--o); color: var(--w); }
+.btn-t.ag { border: 1.5px solid var(--g2); background: var(--g2); color: var(--w); }
+.btn-t.in { border: 1.5px solid var(--borde); background: var(--w); color: var(--gr); }
+.nota-q { font-size: 10px; color: var(--gr); font-weight: 500; }
+
+/* ── CAUSAS ITEMS ── */
+.causa-item { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.causa-nombre { font-size: 11px; color: var(--dk2); flex: 1; font-weight: 500; }
+.causa-bw { width: 80px; height: 6px; background: var(--gr3); border-radius: 3px; flex-shrink: 0; overflow: hidden; }
+.causa-bf { height: 100%; border-radius: 3px; }
+.causa-qty { font-size: 10px; color: var(--gr); width: 30px; text-align: right; flex-shrink: 0; }
+.causa-pct { font-size: 10px; font-weight: 700; color: var(--o); width: 38px; text-align: right; flex-shrink: 0; }
+
+/* ── QUINCENA SELECTOR ── */
+.q-select {
+  font-family: var(--font); font-size: 11px; font-weight: 600;
+  padding: 7px 14px; border-radius: 4px; border: 1.5px solid var(--borde);
+  background: var(--w); color: var(--dk); cursor: pointer; outline: none;
+  transition: border-color .15s;
+}
+.q-select:focus { border-color: var(--o); }
+
+/* ── CIERRE ── */
+.cierre-hero {
+  background: #2D2D2D; color: var(--w);
+  border-radius: 8px; overflow: hidden; margin-bottom: 1.5rem;
+  min-height: 320px; display: flex; align-items: center;
+}
+.cierre-left { padding: 2.5rem 3rem; width: 100%; }
+.cierre-right { background: var(--o); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2.5rem; position: relative; overflow: hidden; }
+.cierre-circle { position: absolute; border-radius: 50%; border: 2px solid rgba(255,255,255,.15); }
+
+/* ── DIVIDER ── */
+.section-sep { height: 1px; background: var(--borde); margin: 2rem 0; }
+
+/* ── FOOTER ── */
+.site-footer { background: #2D2D2D; color: rgba(255,255,255,.7); padding: 1.25rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; border-top: 3px solid var(--o); }
+.site-footer .f-left { font-size: 10px; line-height: 1.7; color: rgba(255,255,255,.7); }
+.site-footer .f-right { font-size: 10px; display: flex; align-items: center; gap: 6px; }
+.footer-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--o); }
+</style>
+</head>
+<body>
+
+<!-- ═══════════ HEADER ═══════════ -->
+<header class="site-header">
+  <div class="header-top">
+    <div class="logo-area">
+      <div class="logo-text">
+        <div class="org">EMVARIAS S.A. E.S.P. · Grupo EPM</div>
+        <div class="sub">Interventoría Área de Aseo</div>
+      </div>
+    </div>
+    <div class="header-meta">
+      <strong>Informe Recargos de Ruta 2026</strong><br>
+      Ene 1 – May 15 · FUDEA &amp; FUNTRAEV · 9 quincenas
+    </div>
+  </div>
+  <nav class="tabs-bar" id="tabsBar">
+    <button class="tab-btn active" onclick="showTab('portada')">🏠 Inicio</button>
+    <button class="tab-btn" onclick="showTab('resumen')">📊 Resumen ejecutivo</button>
+    <button class="tab-btn" onclick="showTab('financiero')">💰 Análisis financiero</button>
+    <button class="tab-btn" onclick="showTab('horas')">⏱ Recargo de ruta</button>
+    <button class="tab-btn" onclick="showTab('zonas')">🗂 Por zonas</button>
+    <button class="tab-btn" onclick="showTab('causas')">⚠️ Causas</button>
+    <button class="tab-btn" onclick="showTab('comparativo')">📅 Comparativo 2025 vs 2026</button>
+    <button class="tab-btn" onclick="showTab('hallazgos')">🔎 Hallazgos</button>
+    <button class="tab-btn" onclick="showTab('cierre')">✅ Conclusión</button>
+  </nav>
+</header>
+
+<!-- ═══════════ S: PORTADA ═══════════ -->
+<section class="section active" id="sec-portada">
+  <div class="cover-hero">
+    <div class="cover-deco-r"></div>
+    <div class="cover-deco-r2"></div>
+    <div class="cover-deco-circle" style="width:260px;height:260px;bottom:-70px;right:220px"></div>
+    <div class="cover-deco-circle" style="width:160px;height:160px;top:-50px;right:60px"></div>
+    <div class="cover-left">
+      <div class="cover-eyebrow">Interventoría Área de Aseo</div>
+      <h1 class="cover-h1">Recargos de <span class="hl">Ruta</span><br>2026</h1>
+      <p class="cover-desc">Análisis financiero y operativo quincenal del valor facturado por recargos de ruta, causas de generación y comportamiento comparativo frente a 2025.</p>
+      <div class="cover-chips">
+        <span class="cchip cchip-fudea">● FUDEA · Zonas 1, 2, 3, 5, 6, 7 y 9</span>
+        <span class="cchip cchip-funtraev">● FUNTRAEV · Zonas 4 y 7</span>
+        <span class="cchip cchip-dk">📅 Ene 1 – May 15 · 2026 · 9 quincenas</span>
+      </div>
+    </div>
+    <div class="cover-right">
+      <div class="stat-box">
+        <div class="s-lbl">Total facturado acumulado (Ene–Abr)</div>
+        <div class="s-val">$1.566 M</div>
+        <div class="s-sub">COP · 8 quincenas con datos financieros</div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-sm"><div class="s-lbl">Recargos de ruta</div><div class="s-val">48.019</div><div class="s-sub">9 quincenas</div></div>
+        <div class="stat-sm"><div class="s-lbl">Crecimiento vs 2025</div><div class="s-val">~75%</div><div class="s-sub">Promedio anual</div></div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-sm"><div class="s-lbl">Causa #1</div><div class="s-val" style="font-size:14px;line-height:1.4">Salida tarde</div><div class="s-sub">~48% FUDEA</div></div>
+        <div class="stat-sm"><div class="s-lbl">Quincena récord</div><div class="s-val" style="font-size:16px">$230,5M</div><div class="s-sub">1-15 Abril 2026</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div style="background:rgba(255,255,255,.95);border:1px solid rgba(255,255,255,.4);border-radius:6px;padding:1.5rem 2rem;margin-top:1.5rem">
+      <div class="card-hdr"><div class="cdot" style="background:var(--o)"></div>Navegación del informe</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px">
+        <div onclick="showTab('resumen')" style="background:var(--o3);border:1px solid rgba(238,116,2,.2);border-radius:5px;padding:.9rem 1rem;cursor:pointer;transition:all .15s" onmouseover="this.style.background='var(--o)';this.style.color='white'" onmouseout="this.style.background='var(--o3)';this.style.color=''">
+          <div style="font-size:18px;margin-bottom:5px">📊</div>
+          <div style="font-size:11px;font-weight:700">Resumen ejecutivo</div>
+          <div style="font-size:10px;color:var(--gr);margin-top:2px">8 KPIs clave del periodo</div>
+        </div>
+        <div onclick="showTab('financiero')" style="background:var(--o3);border:1px solid rgba(238,116,2,.2);border-radius:5px;padding:.9rem 1rem;cursor:pointer;transition:all .15s" onmouseover="this.style.background='var(--o)';this.style.color='white'" onmouseout="this.style.background='var(--o3)';this.style.color=''">
+          <div style="font-size:18px;margin-bottom:5px">💰</div>
+          <div style="font-size:11px;font-weight:700">Análisis financiero</div>
+          <div style="font-size:10px;color:var(--gr);margin-top:2px">Barras, tabla quincenal y tendencia</div>
+        </div>
+        <div onclick="showTab('horas')" style="background:var(--g3);border:1px solid rgba(122,184,0,.2);border-radius:5px;padding:.9rem 1rem;cursor:pointer;transition:all .15s" onmouseover="this.style.background='var(--g2)';this.style.color='white'" onmouseout="this.style.background='var(--g3)';this.style.color=''">
+          <div style="font-size:18px;margin-bottom:5px">⏱</div>
+          <div style="font-size:11px;font-weight:700">Recargo de ruta</div>
+          <div style="font-size:10px;color:var(--gr);margin-top:2px">FUDEA vs FUNTRAEV por quincena</div>
+        </div>
+        <div onclick="showTab('zonas')" style="background:var(--g3);border:1px solid rgba(122,184,0,.2);border-radius:5px;padding:.9rem 1rem;cursor:pointer;transition:all .15s" onmouseover="this.style.background='var(--g2)';this.style.color='white'" onmouseout="this.style.background='var(--g3)';this.style.color=''">
+          <div style="font-size:18px;margin-bottom:5px">🗂</div>
+          <div style="font-size:11px;font-weight:700">Comparativo por zonas</div>
+          <div style="font-size:10px;color:var(--gr);margin-top:2px">Recargo de ruta y valor por zona y quincena</div>
+        </div>
+        <div onclick="showTab('causas')" style="background:var(--o3);border:1px solid rgba(238,116,2,.2);border-radius:5px;padding:.9rem 1rem;cursor:pointer;transition:all .15s" onmouseover="this.style.background='var(--o)';this.style.color='white'" onmouseout="this.style.background='var(--o3)';this.style.color=''">
+          <div style="font-size:18px;margin-bottom:5px">⚠️</div>
+          <div style="font-size:11px;font-weight:700">Causas de recargos</div>
+          <div style="font-size:10px;color:var(--gr);margin-top:2px">Por quincena · FUDEA y FUNTRAEV</div>
+        </div>
+        <div onclick="showTab('comparativo')" style="background:var(--gr3);border:1px solid var(--borde);border-radius:5px;padding:.9rem 1rem;cursor:pointer;transition:all .15s" onmouseover="this.style.background='var(--dk)';this.style.color='white'" onmouseout="this.style.background='var(--gr3)';this.style.color=''">
+          <div style="font-size:18px;margin-bottom:5px">📅</div>
+          <div style="font-size:11px;font-weight:700">Comparativo anual</div>
+          <div style="font-size:10px;color:var(--gr);margin-top:2px">2025 vs 2026 por mes</div>
+        </div>
+        <div onclick="showTab('hallazgos')" style="background:var(--o3);border:1px solid rgba(238,116,2,.2);border-radius:5px;padding:.9rem 1rem;cursor:pointer;transition:all .15s" onmouseover="this.style.background='var(--o)';this.style.color='white'" onmouseout="this.style.background='var(--o3)';this.style.color=''">
+          <div style="font-size:18px;margin-bottom:5px">🔎</div>
+          <div style="font-size:11px;font-weight:700">Hallazgos y alertas</div>
+          <div style="font-size:10px;color:var(--gr);margin-top:2px">6 puntos para decisión gerencial</div>
+        </div>
+        <div onclick="showTab('cierre')" style="background:var(--o3);border:1px solid rgba(238,116,2,.2);border-radius:5px;padding:.9rem 1rem;cursor:pointer;transition:all .15s" onmouseover="this.style.background='var(--o)';this.style.color='white'" onmouseout="this.style.background='var(--o3)';this.style.color=''">
+          <div style="font-size:18px;margin-bottom:5px">✅</div>
+          <div style="font-size:11px;font-weight:700;color:var(--dk)">Conclusión</div>
+          <div style="font-size:10px;color:var(--gr);margin-top:2px">Síntesis y recomendaciones</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ S: RESUMEN EJECUTIVO ═══════════ -->
+<section class="section" id="sec-resumen">
+  <div class="container">
+    <div class="sec-hdr">
+      <div class="sec-eyebrow">Cifras clave del periodo</div>
+      <div class="sec-title">Resumen ejecutivo · <span class="hl">Enero – Abril 2026</span></div>
+      <div class="sec-desc">8 quincenas con datos financieros completos. La quincena 1-15 Mayo registra únicamente horas operativas — datos financieros en revisión por pago quincena vencida.</div>
+    </div>
+    <div class="kpi-grid kpi-4">
+      <div class="kpi o"><div class="kpi-icon o">💰</div><div class="kpi-lbl">Total facturado acum.<br>Ene–Abr (8 quincenas)</div><div class="kpi-val o">$1.566 M</div><div class="kpi-sub">COP · Transporte + Recolección</div></div>
+      <div class="kpi o"><div class="kpi-icon o">🏆</div><div class="kpi-lbl">Quincena de mayor valor<br>registrado en el periodo</div><div class="kpi-val o">$230,5 M</div><div class="kpi-sub">1–15 Abril 2026</div></div>
+      <div class="kpi g"><div class="kpi-icon g">📊</div><div class="kpi-lbl">Promedio quincenal<br>8 quincenas con datos</div><div class="kpi-val g">$195,8 M</div><div class="kpi-sub">COP por período de 15 días</div></div>
+      <div class="kpi dk"><div class="kpi-icon dk">⏱</div><div class="kpi-lbl">Total recargo de ruta acum.<br>9 quincenas</div><div class="kpi-val dk">48.019 h</div><div class="kpi-sub">Incluye 1–15 Mayo (solo horas)</div></div>
+    </div>
+    <div class="kpi-grid kpi-4">
+      <div class="kpi g"><div class="kpi-icon g">🚛</div><div class="kpi-lbl">Componente transporte<br>promedio 8 quincenas</div><div class="kpi-val g">86,9%</div><div class="kpi-sub">vs 13,1% recolección</div></div>
+      <div class="kpi o"><div class="kpi-icon o">📈</div><div class="kpi-lbl">Horas 1–15 Mayo<br>Máximo histórico del periodo</div><div class="kpi-val o">6.188 h</div><div class="kpi-sub">En revisión — pago quincena vencida</div></div>
+      <div class="kpi g"><div class="kpi-icon g">📅</div><div class="kpi-lbl">Crecimiento recargo de ruta<br>vs mismo periodo 2025</div><div class="kpi-val g">~75%</div><div class="kpi-sub">Promedio mensual Ene–Abr</div></div>
+      <div class="kpi o"><div class="kpi-icon o">⚠️</div><div class="kpi-lbl">Causa #1 de recargos<br>ambos contratistas</div><div class="kpi-val" style="font-size:16px;font-weight:800;color:var(--o)">Salida tarde</div><div class="kpi-sub">~48% promedio del periodo · FUDEA</div></div>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-hdr"><div class="cdot" style="background:var(--o)"></div>Distribución transporte vs recolección (acumulado 8Q)</div>
+        <div class="chart-container sm"><canvas id="cDonut"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-hdr"><div class="cdot" style="background:var(--g2)"></div>Total acumulado por mes (COP millones)</div>
+        <div class="chart-container sm"><canvas id="cMensual"></canvas></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ S: FINANCIERO ═══════════ -->
+<section class="section" id="sec-financiero">
+  <div class="container">
+    <div class="sec-hdr">
+      <div class="sec-eyebrow">Valor facturado por quincena</div>
+      <div class="sec-title">Evolución quincenal · Transporte y <span class="hl">Recolección</span></div>
+    </div>
+    <div class="alert">⚠ Los datos financieros de la quincena <strong>1–15 de mayo</strong> se encuentran en revisión — el pago se realiza quincena vencida. Solo se presentan los 8 períodos con información completa.</div>
+    <div class="card">
+      <div class="card-hdr"><div class="cdot" style="background:var(--o)"></div>Valor facturado por quincena — FUDEA + FUNTRAEV (COP millones)</div>
+      <div class="legend"><span><b style="background:#EE7402"></b>Transporte</span><span><b style="background:#93D500"></b>Recolección</span><span style="margin-left:auto;font-size:9px;color:var(--gr)">Valor total sobre cada barra</span></div>
+      <div class="chart-container tall"><canvas id="c3"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-hdr"><div class="cdot" style="background:var(--o)"></div>Valor facturado por quincena — FUDEA vs FUNTRAEV (COP millones)</div>
+      <div class="legend">
+        <span><b style="background:#EE7402"></b>FUDEA (Zonas 1,2,3,5,6,7 y 9)</span>
+        <span><b style="background:#7AB800"></b>FUNTRAEV (Zonas 4 y 7)</span>
+        <span style="margin-left:auto;font-size:9px;color:var(--gr)">Valor total sobre cada barra · millones COP</span>
+      </div>
+      <div class="chart-container tall"><canvas id="cFudeaFun"></canvas></div>
+    </div>
+    <div class="sec-hdr" style="margin-top:.5rem">
+      <div class="sec-title" style="font-size:16px">Tabla detallada por quincena</div>
+    </div>
+    <div class="table-wrap">
+      <table class="t">
+        <colgroup><col style="width:11%"><col style="width:18%"><col style="width:17%"><col style="width:19%"><col style="width:13%"><col style="width:12%"><col style="width:10%"></colgroup>
+        <thead><tr>
+          <th style="text-align:left">Quincena</th>
+          <th style="text-align:right">Transporte (COP)</th>
+          <th style="text-align:right">Recolección (COP)</th>
+          <th style="text-align:right">Total quincena (COP)</th>
+          <th style="text-align:right">Horas extras</th>
+          <th style="text-align:center">Variación</th>
+          <th style="text-align:center">Estado</th>
+        </tr></thead>
+        <tbody id="tb4"></tbody>
+        <tfoot id="tf4"></tfoot>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ S: HORAS ═══════════ -->
+<section class="section" id="sec-horas">
+  <div class="container">
+    <div class="sec-hdr">
+      <div class="sec-eyebrow">Horas extras por quincena y contratista</div>
+      <div class="sec-title">Recargo de ruta · <span class="hl">FUDEA</span> vs <span class="hlg">FUNTRAEV</span></div>
+    </div>
+    <div class="kpi-grid kpi-3">
+      <div class="kpi o"><div class="kpi-icon o">🏗</div><div class="kpi-lbl">FUDEA · Total horas acum. (9Q)</div><div class="kpi-val o" id="fudH">37.538 h</div><div class="kpi-sub">Zonas 1, 2, 3, 5, 6, 7 y 9</div></div>
+      <div class="kpi g"><div class="kpi-icon g">🔧</div><div class="kpi-lbl">FUNTRAEV · Total horas acum. (9Q)</div><div class="kpi-val g" id="funH">10.481 h</div><div class="kpi-sub">Zonas 4 y 7</div></div>
+      <div class="kpi dk"><div class="kpi-icon dk">📈</div><div class="kpi-lbl">Incremento vs 1-15 Ene</div><div class="kpi-val dk">+50.3%</div><div class="kpi-sub">4.116 h → 6.188 h en 4 meses</div></div>
+    </div>
+    <div class="card">
+      <div class="card-hdr"><div class="cdot" style="background:var(--o)"></div>Recargo de ruta por quincena — FUDEA vs FUNTRAEV</div>
+      <div class="legend"><span><b style="background:#EE7402"></b>FUDEA</span><span><b style="background:#7AB800"></b>FUNTRAEV</span></div>
+      <div class="chart-container tall"><canvas id="c5"></canvas></div>
+    </div>
+    <div class="grid-2">
+      <div class="card" style="margin-bottom:0">
+        <div class="card-hdr"><div class="cdot" style="background:var(--o)"></div>Participación de horas extras por zona · acumulado 9Q</div>
+        <div id="barsZ"></div>
+      </div>
+      <div class="card" style="margin-bottom:0">
+        <div class="card-hdr"><div class="cdot" style="background:var(--g2)"></div>Distribución horas por zona (% del total)</div>
+        <div class="chart-container"><canvas id="cZonaDonut"></canvas></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ S: ZONAS ═══════════ -->
+<section class="section" id="sec-zonas">
+  <div class="container">
+    <div class="sec-hdr">
+      <div class="sec-eyebrow">Recargo de ruta y valor facturado por zona</div>
+      <div class="sec-title">Comportamiento por zona · <span class="hl">por contratista</span></div>
+    </div>
+    <div class="toggle-bar">
+      <button class="btn-t ao" id="btnH" onclick="toggleZona('h')">⏱ Recargo de ruta</button>
+      <button class="btn-t in" id="btnV" onclick="toggleZona('v')">💰 Valor facturado (COP)</button>
+      <span class="nota-q" id="notaQ">9 quincenas</span>
+    </div>
+    <div class="grid-6040">
+      <div class="card" style="margin-bottom:0;display:flex;flex-direction:column">
+        <div class="card-hdr"><div style="width:10px;height:10px;border-radius:50%;background:var(--o);flex-shrink:0"></div>FUDEA · Zonas 1, 2, 3, 5, 6, 7 y 9</div>
+        <div class="chart-container tall"><canvas id="cFudea"></canvas></div>
+      </div>
+      <div class="card" style="margin-bottom:0;display:flex;flex-direction:column">
+        <div class="card-hdr"><div style="width:10px;height:10px;border-radius:50%;background:var(--g2);flex-shrink:0"></div>FUNTRAEV · Zonas 4 y 7</div>
+        <div class="chart-container tall"><canvas id="cFun"></canvas></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════ S: CAUSAS ═══════════ -->
+<section class="section" id="sec-causas">
+  <div class="container">
+    <div class="sec-hdr">
+      <div class="sec-eyebrow">Análisis de causas por quincena</div>
+      <div class="sec-title">Causas de generación de <span class="hl">recargos de ruta</span></div>
+      <div class="sec-desc">Seleccione una quincena para ver el detalle de causas por contratista. Las causas se registran en el sistema operativo al momento de generar cada recargo.</div>
+    </div>
+    <div class="toggle-bar">
+      <select id="selQ" class="q-select" onchange="renderCausas()">
+        <option value="0">📅 1-15 Enero</option><option value="1">📅 16-31 Enero</option>
+        <option value="2">📅 1-15 Febrero</option><option value="3">📅 16-28 Febrero</option>
+        <option value="4">📅 1-15 Marzo</option><option value="5">📅 16-31 Marzo</option>
+        <option value="6">📅 1-15 Abril</option><option value="7">📅 16-30 Abril</option>
+        <option value="8">📅 1-15 Mayo</option>
+      </select>
+      <span class="nota-q" id="notaTotal"></span>
+    </div>
+    <div class="grid-2" style="margin-bottom:1.25rem">
+      <div class="card" style="margin-bottom:0">
+        <div class="card-hdr"><div style="width:10px;height:10px;border-radius:50%;background:var(--o);flex-shrink:0"></div>FUDEA <span id="totalU" style="font-size:9px;color:var(--gr);font-weight:500;margin-left:4px"></span></div>
+        <div id="causasU"></div>
+      </div>
+      <div class="card" style="margin-bottom:0">
+        <div class="card-hdr"><div style="width:10px;height:10px;border-radius:50%;background:var(--g2);flex-shrink:0"></div>FUNTRAEV <span id="totalF" style="font-size:9px;color:var(--gr);font-weight:500;margin-left:4px"></span></div>
+        <div id="causasF"></div>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="card" style="margin-bottom:0">
+        <div class="card-hdr" style="font-size:9px"><div class="cdot" style="background:var(--o)"></div>Distribución FUDEA</div>
+        <div class="chart-container"><canvas id="cPieU"></canvas></div>
+      </div>
+      <div class="card" style="margin-bottom:0">
+        <div class="card-hdr" style="font-size:9px"><div class="cdot" style="background:var(--g2)"></div>Distribución FUNTRAEV</div>
+        <div class="chart-container"><canvas id="cPieF"></canvas></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ S: COMPARATIVO ═══════════ -->
+<section class="section" id="sec-comparativo">
+  <div class="container">
+    <div class="sec-hdr">
+      <div class="sec-eyebrow">Análisis comparativo anual</div>
+      <div class="sec-title">Recargo de ruta <span class="hl">2026</span> vs <span style="color:var(--gr)">2025</span> · por mes</div>
+    </div>
+    <div class="kpi-grid kpi-4">
+      <div class="kpi o"><div class="kpi-icon o">📈</div><div class="kpi-lbl">Recargo Ene 2026 vs 2025</div><div class="kpi-val o">+91%</div><div class="kpi-sub">9.537 h vs 4.992 h*</div></div>
+      <div class="kpi o"><div class="kpi-icon o">📈</div><div class="kpi-lbl">Recargo Feb 2026 vs 2025</div><div class="kpi-val o">+75,9%</div><div class="kpi-sub">9.840 h vs 5.594 h</div></div>
+      <div class="kpi o"><div class="kpi-icon o">📈</div><div class="kpi-lbl">Recargo Mar 2026 vs 2025</div><div class="kpi-val o">+75,9%</div><div class="kpi-sub">10.875 h vs 6.182 h</div></div>
+      <div class="kpi o"><div class="kpi-icon o">📈</div><div class="kpi-lbl">Recargo Abr 2026 vs 2025</div><div class="kpi-val o">+64,9%</div><div class="kpi-sub">10.875 h vs 6.596 h</div></div>
+    </div>
+    <div class="grid-6040">
+      <div class="card" style="margin-bottom:0">
+        <div class="card-hdr"><div class="cdot" style="background:var(--o)"></div>Total recargo de ruta por mes — 2025 vs 2026</div>
+        <div class="legend"><span><b style="background:#EE7402"></b>2026</span><span><b style="background:#C6C6C6"></b>2025</span></div>
+        <div class="chart-container tall"><canvas id="c7"></canvas></div>
+      </div>
+      <div class="card" style="margin-bottom:0">
+        <div class="card-hdr"><div class="cdot" style="background:var(--g2)"></div>Crecimiento interanual de recargo de ruta</div>
+        <div id="compR" style="margin-top:.5rem"></div>
+        <div style="margin-top:12px;font-size:9px;color:var(--gr);border-top:1px solid var(--borde);padding-top:8px">* Datos de Enero verificados en archivo fuente. Las cifras de 2026 corresponden al total acumulado mensual.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ S: HALLAZGOS ═══════════ -->
+<section class="section" id="sec-hallazgos">
+  <div class="container">
+    <div class="sec-hdr">
+      <div class="sec-eyebrow">Puntos de atención para decisión gerencial</div>
+      <div class="sec-title">Hallazgos del periodo <span class="hl">Ene – May 2026</span></div>
+    </div>
+    <div class="grid-2">
+      <div>
+        <div class="hallazgo o"><div class="h-icon o">📈</div><div><div class="h-title">Tendencia alcista sostenida del costo quincenal</div><div class="h-desc">El valor creció 48,6% entre la 1-15 Ene ($123,6 M) y la 1-15 Abr ($230,5 M). La presión acumulada exige revisión presupuestal para el segundo semestre.</div></div></div>
+        <div class="hallazgo o"><div class="h-icon o">⏰</div><div><div class="h-title">Salida tarde: causa dominante en FUDEA</div><div class="h-desc">Promedia el 48% de todos los registros de causa en FUDEA. Ruta extensa es la segunda causa más frecuente (~40%). Requiere revisión de los tiempos de despacho de vehículos.</div></div></div>
+        <div class="hallazgo g"><div class="h-icon g">📊</div><div><div class="h-title">Recargo de ruta crece +50% en solo 4 meses</div><div class="h-desc">De 4.116 h (1-15 Ene) a 6.188 h (1-15 May). El año 2026 prácticamente duplica el recargo de ruta frente al mismo periodo de 2025 en todos los meses del año.</div></div></div>
+      </div>
+      <div>
+        <div class="hallazgo o"><div class="h-icon o">🚦</div><div><div class="h-title">Congestión vehicular: impacto mayor en FUNTRAEV</div><div class="h-desc">Congestión (Macro Ruta + Pradera + Micro Ruta) suma entre 15% y 40% de las causas en FUNTRAEV vs menos del 5% en FUDEA. Las rutas en zonas congestionadas de FUNTRAEV requieren reprogramación.</div></div></div>
+        <div class="hallazgo g"><div class="h-icon g">🏆</div><div><div class="h-title">Zona 1 y Zona 6 lideran la carga operativa FUDEA</div><div class="h-desc">Zona 1 representa ~21% del total de horas acumuladas (9.452 h); Zona 6 ~17% (8.222 h). Son las zonas con mayor presión sostenida durante todo el periodo analizado.</div></div></div>
+        <div class="hallazgo o"><div class="h-icon o">📋</div><div><div class="h-title">Datos financieros 1-15 Mayo pendientes</div><div class="h-desc">6.188 horas de recargo de ruta registradas — el máximo del periodo — sin valor financiero asociado aún. Completar antes de proyecciones presupuestales o socialización con los contratistas.</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ S: CIERRE ═══════════ -->
+<section class="section" id="sec-cierre">
+  <div class="container">
+    <div class="cierre-hero">
+      <div class="cierre-left">
+        <div style="font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--o);margin-bottom:10px;display:flex;align-items:center;gap:7px"><span style="display:inline-block;width:14px;height:2px;background:var(--o);border-radius:2px"></span>Conclusión general del periodo</div>
+        <div style="font-size:clamp(22px,3vw,34px);font-weight:800;color:var(--w);line-height:1.15;margin-bottom:14px">El periodo Ene–May 2026 supera en <span style="color:var(--o)">~75%</span> el recargo de ruta de 2025 — con <span style="color:var(--o)">Salida tarde</span> como causa dominante</div>
+        <p style="font-size:12px;color:var(--gr2);line-height:1.75;margin-bottom:22px">Acumulado financiero enero–abril: <strong style="color:var(--w)">$1.566.113.158 COP</strong>. La tendencia creciente en recargos y en valores exige atención presupuestal y acciones correctivas sobre los despachos y las rutas asignadas para el segundo semestre.</p>
+        <div class="kpi-grid kpi-3" style="margin-bottom:0">
+          <div style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:5px;padding:.9rem 1rem;text-align:center"><div style="font-size:9px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:5px">Acumulado Ene–Abr</div><div style="font-size:22px;font-weight:800;color:var(--o)">$1.566 M</div></div>
+          <div style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:5px;padding:.9rem 1rem;text-align:center"><div style="font-size:9px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:5px">Total recargo de ruta (9Q)</div><div style="font-size:22px;font-weight:800;color:var(--w)">48.019 h</div></div>
+          <div style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:5px;padding:.9rem 1rem;text-align:center"><div style="font-size:9px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:5px">Causa #1</div><div style="font-size:14px;font-weight:800;color:var(--o);line-height:1.3">Salida tarde</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<footer class="site-footer">
+  <div class="f-left">
+    <strong style="color:var(--w)">EMVARIAS S.A. E.S.P.</strong> · Interventoría Área de Aseo<br>
+    Contratos: CW367190 · CW367192 · CW355665 · CW357768 | Contratistas: FUDEA y FUNTRAEV
+  </div>
+  <div class="f-right"><div class="footer-dot"></div><span>Informe Recargos de Ruta 2026 · Junio 2026</span></div>
+</footer>
+
+<script>
+Chart.register(ChartDataLabels);
+Chart.defaults.font.family = "'Montserrat', Arial, sans-serif";
+Chart.defaults.font.size = 10;
+Chart.defaults.color = '#7C7C7B';
+Chart.defaults.borderColor = '#E8E8E8';
+const NO = {display:false};
+const O='#EE7402', O2='#F58B25', G='#93D500', G2='#7AB800', GR='#C6C6C6';
+
+// ── TABS ──
+function showTab(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sec-' + id).classList.add('active');
+  const btns = document.querySelectorAll('.tab-btn');
+  btns.forEach(b => { if(b.getAttribute('onclick').includes("'"+id+"'")) b.classList.add('active'); });
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// ── DATOS ──
+const qs9 = ['1-15 Ene','16-31 Ene','1-15 Feb','16-28 Feb','1-15 Mar','16-31 Mar','1-15 Abr','16-30 Abr','1-15 May'];
+const qs8 = qs9.slice(0,8);
+const transp  = [134800000,179294000,165489000,163031000,170421000,176179000,193386000,177820000];
+const recolec = [16638000,22658000,30354000,17631000,26558000,28633000,37107000,26119000];
+const totalQ  = [151434183,201952867,195841109,180662411,196978449,204811759,230493473,203938908];
+const horasQ  = [4116,5421,5069,4771,5329,5546,6115,5464,6188];
+const horasFudea = [3158,4139,4205,3637,4250,4247,4756,4274,4872];
+const horasFunc  = [958,1282,864,1134,1079,1299,1359,1190,1316];
+const valFudea = [123.6,157.8,157.7,140.4,159.9,161.0,183.7,162.6];
+const valFun   = [27.8,44.1,38.1,40.3,37.1,43.8,46.8,41.3];
+const acumZ = {Z1:10296,Z2:8261,Z3:3740,Z5:2778,Z6:8168,Z7:489,Z9:3806,Z4F:6675,Z7F:3806};
+const totZ  = Object.values(acumZ).reduce((a,b)=>a+b,0);
+const sumT = transp.reduce((a,b)=>a+b,0);
+const sumR = recolec.reduce((a,b)=>a+b,0);
+
+// ── RESUMEN: dona transporte/recolección ──
+new Chart(document.getElementById('cDonut'),{type:'doughnut',
+  data:{labels:['Transporte','Recolección'],datasets:[{data:[Math.round(sumT/1e6),Math.round(sumR/1e6)],backgroundColor:[O,G],borderWidth:0,datalabels:NO}]},
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{
+      legend:{position:'bottom',labels:{boxWidth:10,padding:10}},
+      datalabels:NO,
+      tooltip:{callbacks:{label:c=>' $'+c.parsed.toLocaleString('es-CO')+' M ('+((c.parsed/(Math.round(sumT/1e6)+Math.round(sumR/1e6)))*100).toFixed(1)+'%)'}}
+    },
+    cutout:'60%'}
+});
+
+// ── RESUMEN: mensual barras ──
+new Chart(document.getElementById('cMensual'),{type:'bar',
+  data:{labels:['Enero','Febrero','Marzo','Abril'],
+    datasets:[{label:'Total mes (M COP)',data:[353.4,376.5,401.8,434.4],backgroundColor:[O,O2,G2,G],borderRadius:3,datalabels:{display:true,anchor:'end',align:'end',formatter:v=>'$'+v+'M',color:O,font:{size:9,weight:'700'}}}]},
+  options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:18}},
+    plugins:{legend:{display:false},datalabels:{display:true}},
+    scales:{x:{grid:{display:false}},y:{ticks:{callback:v=>'$'+v+'M'},grid:{color:'rgba(0,0,0,0.04)'}}}}
+});
+
+// ── C3: barras apiladas ──
+new Chart(document.getElementById('c3'),{type:'bar',
+  data:{labels:qs8,datasets:[
+    {label:'Transporte',data:transp.map(v=>+(v/1e6).toFixed(1)),backgroundColor:O,borderRadius:2,datalabels:NO},
+    {label:'Recolección',data:recolec.map(v=>+(v/1e6).toFixed(1)),backgroundColor:G,borderRadius:2,
+      datalabels:{display:true,anchor:'end',align:'end',formatter:(v,ctx)=>'$'+totalQ[ctx.dataIndex]/1e6.toFixed(0)+'M',
+        formatter:(v,ctx)=>{const t=totalQ[ctx.dataIndex];return t?'$'+(t/1e6).toFixed(1)+'M':'';},
+        color:O,font:{size:9,weight:'700'},padding:{bottom:1}}},
+  ]},
+  options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:22}},
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.dataset.label+': $'+c.parsed.y+'M'}}},
+    scales:{x:{stacked:true,grid:{display:false},ticks:{font:{size:10,weight:'500'}}},y:{stacked:true,ticks:{callback:v=>'$'+v+'M'},grid:{color:'rgba(0,0,0,0.04)'}}}}
+});
+
+// ── FUDEA vs FUNTRAEV líneas ──
+new Chart(document.getElementById('cFudeaFun'),{type:'line',
+  data:{labels:qs8,datasets:[
+    {label:'FUDEA',data:valFudea,
+      borderColor:O,backgroundColor:'rgba(238,116,2,0.08)',
+      fill:true,tension:0.4,
+      pointRadius:5,pointBackgroundColor:O,pointBorderColor:'#fff',pointBorderWidth:2,
+      datalabels:NO},
+    {label:'FUNTRAEV',data:valFun,
+      borderColor:G2,backgroundColor:'rgba(122,184,0,0.07)',
+      fill:true,tension:0.4,
+      pointRadius:5,pointBackgroundColor:G2,pointBorderColor:'#fff',pointBorderWidth:2,
+      borderDash:[6,3],
+      datalabels:NO},
+  ]},
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{
+      legend:{display:false},
+      datalabels:NO,
+      tooltip:{callbacks:{
+        label:c=>c.dataset.label+': $'+c.parsed.y.toFixed(1)+'M',
+        footer:items=>'Total quincena: $'+(valFudea[items[0].dataIndex]+valFun[items[0].dataIndex]).toFixed(1)+'M'
+      }}
+    },
+    scales:{
+      x:{grid:{display:false},ticks:{font:{size:10,weight:'500'}}},
+      y:{min:0,ticks:{callback:v=>'$'+v+'M'},grid:{color:'rgba(0,0,0,0.04)'}}
+    }
+  }
+});
+
+// ── TABLA ──
+const tb4=document.getElementById('tb4'),tf4=document.getElementById('tf4');
+let sT=0,sR=0,sQ=0,sH=0;
+qs9.forEach((q,i)=>{
+  const T=transp[i],R=recolec[i],Tot=totalQ[i],H=horasQ[i];
+  if(T)sT+=T; if(R)sR+=R; if(Tot)sQ+=Tot; sH+=H;
+  const prev=i>0?totalQ[i-1]:null;
+  let vH='<span style="color:#C6C6C6">—</span>';
+  if(Tot&&prev){const p=((Tot-prev)/prev*100).toFixed(1);const up=Tot>=prev;vH=`<span class="pill ${up?'pill-up':'pill-dn'}">${up?'▲':'▼'} ${Math.abs(p)}%</span>`;}
+  const estado=Tot?`<span class="pill pill-ok">✓</span>`:`<span class="pill pill-wn">Rev.</span>`;
+  const r=document.createElement('tr');
+  r.innerHTML=`<td style="font-weight:600;text-align:left;color:var(--dk)">${q}</td>
+    <td style="text-align:right;color:var(--o);font-weight:600">${T?'$'+(T/1e6).toFixed(1)+'M':'—'}</td>
+    <td style="text-align:right;color:var(--g2);font-weight:600">${R?'$'+(R/1e6).toFixed(1)+'M':'—'}</td>
+    <td style="text-align:right;font-weight:700">${Tot?'$'+(Tot/1e6).toFixed(1)+'M':'—'}</td>
+    <td style="text-align:right;font-weight:600">${H.toLocaleString('es-CO')}</td>
+    <td style="text-align:center">${vH}</td>
+    <td style="text-align:center">${estado}</td>`;
+  tb4.appendChild(r);
+});
+tf4.innerHTML=`<tr><td style="text-align:left">TOTAL ACUMULADO</td><td style="text-align:right">$${(sT/1e6).toFixed(1)}M</td><td style="text-align:right">$${(sR/1e6).toFixed(1)}M</td><td style="text-align:right">$${(sQ/1e6).toFixed(1)}M</td><td style="text-align:right">${sH.toLocaleString('es-CO')}</td><td></td><td></td></tr>`;
+
+// ── HORAS C5 ──
+new Chart(document.getElementById('c5'),{type:'line',
+  data:{labels:qs9,datasets:[
+    {label:'FUDEA',data:horasFudea,borderColor:O,backgroundColor:'rgba(238,116,2,0.08)',fill:true,tension:0.4,pointRadius:5,pointBackgroundColor:O,pointBorderColor:'#fff',pointBorderWidth:2,datalabels:NO},
+    {label:'FUNTRAEV',data:horasFunc,borderColor:G2,backgroundColor:'rgba(122,184,0,0.06)',fill:true,tension:0.4,pointRadius:5,pointBackgroundColor:G2,pointBorderColor:'#fff',pointBorderWidth:2,borderDash:[5,3],datalabels:NO},
+  ]},
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},datalabels:NO,tooltip:{callbacks:{label:c=>c.dataset.label+': '+c.parsed.y.toLocaleString('es-CO')+' h'}}},
+    scales:{x:{grid:{display:false}},y:{ticks:{callback:v=>v.toLocaleString('es-CO')},grid:{color:'rgba(0,0,0,0.04)'}}}}
+});
+const fT=horasFudea.reduce((a,b)=>a+b,0),fnT=horasFunc.reduce((a,b)=>a+b,0);
+document.getElementById('fudH').textContent=fT.toLocaleString('es-CO')+' h';
+document.getElementById('funH').textContent=fnT.toLocaleString('es-CO')+' h';
+const bZ=document.getElementById('barsZ');
+[{l:'Zona 1 (FUDEA)',k:'Z1',c:O},{l:'Zona 2 (FUDEA)',k:'Z2',c:O},{l:'Zona 6 (FUDEA)',k:'Z6',c:O},
+ {l:'Zona 4 (FUNTRAEV)',k:'Z4F',c:G2},{l:'Zona 9 (FUDEA)',k:'Z9',c:O},{l:'Zona 3 (FUDEA)',k:'Z3',c:O},
+ {l:'Zona 7 (FUNTRAEV)',k:'Z7F',c:G2},{l:'Zona 5 (FUDEA)',k:'Z5',c:O},{l:'Zona 7 (FUDEA)',k:'Z7',c:O}
+].forEach(z=>{
+  const p=(acumZ[z.k]/totZ*100);
+  bZ.innerHTML+=`<div class="bar-row"><div class="bar-lbl">${z.l}</div><div class="bar-track"><div class="bar-fill" style="width:${p}%;background:${z.c}"></div></div><div class="bar-pct">${p.toFixed(1)}%</div></div>`;
+});
+new Chart(document.getElementById('cZonaDonut'),{type:'doughnut',
+  data:{labels:['Zona 1 (FUDEA)','Zona 2 (FUDEA)','Zona 6 (FUDEA)','Zona 4 (FUNTRAEV)','Zona 9 (FUDEA)','Zona 3 (FUDEA)','Zona 7 (FUNTRAEV)','Zona 5 (FUDEA)','Zona 7 (FUDEA)'],
+    datasets:[{data:[acumZ.Z1,acumZ.Z2,acumZ.Z6,acumZ.Z4F,acumZ.Z9,acumZ.Z3,acumZ.Z7F,acumZ.Z5,acumZ.Z7],
+      backgroundColor:[O,'#F58B25','#F9A04A','#7AB800','#FBBA70','#FCC98A','#93D500','#FDD8A8','#FEE9CC'],
+      borderWidth:1,borderColor:'#fff',datalabels:NO}]},
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{
+      legend:{position:'right',labels:{boxWidth:10,padding:7,font:{size:9}}},
+      datalabels:NO,
+      tooltip:{callbacks:{
+        label:c=>{
+          const val=c.parsed;
+          const pct=(val/totZ*100).toFixed(1);
+          return ' '+val.toLocaleString('es-CO')+' h · '+pct+'%';
+        }
+      }}
+    },
+    cutout:'55%'}
+});
+
+// ── ZONAS ──
+const qsZ9=['1-15 Ene','16-31 Ene','1-15 Feb','16-28 Feb','1-15 Mar','16-31 Mar','1-15 Abr','16-30 Abr','1-15 May'];
+const qsZ8=qsZ9.slice(0,8);
+const hZ1=[840,1064,1145,995,1131,1193,1350,1262,1316],hZ2=[802,892,971,849,1015,887,1017,799,1029];
+const hZ3=[346,391,405,355,477,396,487,364,519],hZ5=[190,338,334,240,283,366,318,343,366];
+const hZ6=[684,928,914,746,874,906,1031,987,1098],hZ7b=[65,56,64,30,51,54,64,53,52];
+const hZ9=[231,470,372,422,419,445,489,466,492],hZ4=[544,810,506,691,656,782,940,821,925],hZ7f=[414,472,358,443,423,517,419,369,391];
+const vZ1=[35.64,44.31,45.96,41.16,45.9,49.5,57.84,51.94],vZ2=[34.65,39.3,41.42,38.48,43.5,38.77,44.55,35.66];
+const vZ3=[13.07,14.47,15.31,13.62,17.69,14.78,18.57,14.22],vZ5=[7.11,11.82,11.33,8.66,9.47,12.95,11.24,12.09];
+const vZ6=[23.28,31.9,29.84,24.62,28.6,30.15,33.61,32.75],vZ7b=[2.79,2.36,2.67,0.0,2.04,0.0,2.77,2.35];
+const vZ9=[7.09,13.65,11.2,12.57,12.72,12.62,15.08,13.59],vZ4=[15.65,27.2,24.84,23.56,21.74,25.63,31.3,27.45],vZ7f=[12.15,16.94,13.26,16.74,15.31,18.2,15.53,13.89];
+const cFud=['#EE7402','#F58B25','#F9A04A','#FBBA70','#FCC98A','#FDD8A8','#FEE9CC'];
+function dsFudea(m){return[
+  {label:'Z1',data:m==='h'?hZ1:vZ1,backgroundColor:cFud[0],borderRadius:2,datalabels:NO},
+  {label:'Z2',data:m==='h'?hZ2:vZ2,backgroundColor:cFud[1],borderRadius:2,datalabels:NO},
+  {label:'Z3',data:m==='h'?hZ3:vZ3,backgroundColor:cFud[2],borderRadius:2,datalabels:NO},
+  {label:'Z5',data:m==='h'?hZ5:vZ5,backgroundColor:cFud[3],borderRadius:2,datalabels:NO},
+  {label:'Z6',data:m==='h'?hZ6:vZ6,backgroundColor:cFud[4],borderRadius:2,datalabels:NO},
+  {label:'Z7',data:m==='h'?hZ7b:vZ7b,backgroundColor:cFud[5],borderRadius:2,datalabels:NO},
+  {label:'Z9',data:m==='h'?hZ9:vZ9,backgroundColor:cFud[6],borderRadius:2,datalabels:NO},
+];}
+function dsFun(m){return[
+  {label:'Z4',data:m==='h'?hZ4:vZ4,backgroundColor:G2,borderRadius:2,datalabels:NO},
+  {label:'Z7',data:m==='h'?hZ7f:vZ7f,backgroundColor:G,borderRadius:2,datalabels:NO},
+];}
+const optZFudea=(m)=>({responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:8,padding:6,font:{size:9,weight:'600'}}},datalabels:NO,tooltip:{mode:'index',intersect:false,callbacks:{label:c=>'Zona '+c.dataset.label+': '+(m==='h'?c.parsed.y.toLocaleString('es-CO')+' h':'$'+c.parsed.y+'M'),footer:items=>'━━━━━━━━━━━━━━  Total FUDEA: '+(m==='h'?items.reduce((a,i)=>a+i.parsed.y,0).toLocaleString('es-CO')+' h':'$'+items.reduce((a,i)=>a+i.parsed.y,0).toFixed(1)+'M')}}},scales:{x:{stacked:true,grid:{display:false},ticks:{font:{size:9},maxRotation:45,minRotation:45,autoSkip:false}},y:{stacked:true,ticks:{callback:v=>m==='h'?v.toLocaleString('es-CO'):'$'+v+'M',font:{size:9}},grid:{color:'rgba(0,0,0,0.04)'}}}});
+const optZFun=(m)=>({responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:8,padding:6,font:{size:9,weight:'600'}}},datalabels:NO,tooltip:{mode:'index',intersect:false,callbacks:{label:c=>'Zona '+c.dataset.label+': '+(m==='h'?c.parsed.y.toLocaleString('es-CO')+' h':'$'+c.parsed.y+'M'),footer:items=>'━━━━━━━━━━━━━━  Total FUNTRAEV: '+(m==='h'?items.reduce((a,i)=>a+i.parsed.y,0).toLocaleString('es-CO')+' h':'$'+items.reduce((a,i)=>a+i.parsed.y,0).toFixed(1)+'M')}}},scales:{x:{stacked:true,grid:{display:false},ticks:{font:{size:9},maxRotation:45,minRotation:45,autoSkip:false}},y:{stacked:true,ticks:{callback:v=>m==='h'?v.toLocaleString('es-CO'):'$'+v+'M',font:{size:9}},grid:{color:'rgba(0,0,0,0.04)'}}}});
+const chFudea=new Chart(document.getElementById('cFudea'),{type:'bar',data:{labels:qsZ9,datasets:dsFudea('h')},options:optZFudea('h')});
+const chFun=new Chart(document.getElementById('cFun'),{type:'bar',data:{labels:qsZ9,datasets:dsFun('h')},options:optZFun('h')});
+function toggleZona(m){
+  const qs=m==='h'?qsZ9:qsZ8;
+  chFudea.data.labels=qs; chFudea.data.datasets=dsFudea(m); chFudea.options=optZFudea(m); chFudea.update();
+  chFun.data.labels=qs; chFun.data.datasets=dsFun(m); chFun.options=optZFun(m); chFun.update();
+  document.getElementById('notaQ').textContent=m==='h'?'9 quincenas':'8 quincenas con datos financieros';
+  document.getElementById('btnH').className='btn-t '+(m==='h'?'ao':'in');
+  document.getElementById('btnV').className='btn-t '+(m==='v'?'ag':'in');
+}
+
+// ── CAUSAS ──
+const causaCol={'SALIDA TARDE':O,'RUTA EXTENSA':O2,'CONG. MACRO RUTA':G2,'CONG. PRADERA':G,'VARADO':'#7C7C7B','EVACUACIÓN VEH.':'#C6C6C6','CONG. MICRO RUTA':'#F9A04A','APOYO':'#FCC98A'};
+const causasData=[
+  {u:{APOYO:10,'CONG. MACRO RUTA':37,'CONG. MICRO RUTA':3,'CONG. PRADERA':2,'EVACUACIÓN VEH.':17,'RUTA EXTENSA':612,'SALIDA TARDE':630,'VARADO':67},tu:1378,f:{APOYO:3,'CONG. MACRO RUTA':50,'CONG. MICRO RUTA':6,'CONG. PRADERA':53,'EVACUACIÓN VEH.':2,'RUTA EXTENSA':148,'SALIDA TARDE':137,'VARADO':21},tf:420},
+  {u:{APOYO:21,'CONG. MACRO RUTA':28,'CONG. MICRO RUTA':10,'CONG. PRADERA':22,'EVACUACIÓN VEH.':15,'RUTA EXTENSA':855,'SALIDA TARDE':701,'VARADO':85},tu:1737,f:{APOYO:2,'CONG. MACRO RUTA':73,'CONG. MICRO RUTA':5,'CONG. PRADERA':143,'EVACUACIÓN VEH.':2,'RUTA EXTENSA':209,'SALIDA TARDE':111,'VARADO':32},tf:577},
+  {u:{APOYO:10,'CONG. MACRO RUTA':16,'CONG. MICRO RUTA':4,'CONG. PRADERA':6,'EVACUACIÓN VEH.':22,'RUTA EXTENSA':667,'SALIDA TARDE':879,'VARADO':100},tu:1704,f:{APOYO:14,'CONG. MACRO RUTA':70,'CONG. MICRO RUTA':6,'CONG. PRADERA':56,'EVACUACIÓN VEH.':0,'RUTA EXTENSA':223,'SALIDA TARDE':124,'VARADO':37},tf:530},
+  {u:{APOYO:8,'CONG. MACRO RUTA':40,'CONG. MICRO RUTA':6,'CONG. PRADERA':15,'EVACUACIÓN VEH.':19,'RUTA EXTENSA':685,'SALIDA TARDE':638,'VARADO':73},tu:1484,f:{APOYO:4,'CONG. MACRO RUTA':87,'CONG. MICRO RUTA':6,'CONG. PRADERA':116,'EVACUACIÓN VEH.':5,'RUTA EXTENSA':205,'SALIDA TARDE':79,'VARADO':32},tf:534},
+  {u:{APOYO:6,'CONG. MACRO RUTA':5,'CONG. MICRO RUTA':1,'CONG. PRADERA':18,'EVACUACIÓN VEH.':29,'RUTA EXTENSA':816,'SALIDA TARDE':839,'VARADO':66},tu:1780,f:{APOYO:4,'CONG. MACRO RUTA':30,'CONG. MICRO RUTA':5,'CONG. PRADERA':107,'EVACUACIÓN VEH.':0,'RUTA EXTENSA':149,'SALIDA TARDE':152,'VARADO':38},tf:485},
+  {u:{APOYO:29,'CONG. MACRO RUTA':34,'CONG. MICRO RUTA':0,'CONG. PRADERA':9,'EVACUACIÓN VEH.':20,'RUTA EXTENSA':660,'SALIDA TARDE':1053,'VARADO':52},tu:1857,f:{APOYO:19,'CONG. MACRO RUTA':46,'CONG. MICRO RUTA':4,'CONG. PRADERA':70,'EVACUACIÓN VEH.':0,'RUTA EXTENSA':177,'SALIDA TARDE':185,'VARADO':32},tf:533},
+  {u:{APOYO:14,'CONG. MACRO RUTA':33,'CONG. MICRO RUTA':2,'CONG. PRADERA':20,'EVACUACIÓN VEH.':14,'RUTA EXTENSA':673,'SALIDA TARDE':1054,'VARADO':52},tu:1862,f:{APOYO:9,'CONG. MACRO RUTA':46,'CONG. MICRO RUTA':4,'CONG. PRADERA':70,'EVACUACIÓN VEH.':0,'RUTA EXTENSA':177,'SALIDA TARDE':184,'VARADO':32},tf:522},
+  {u:{APOYO:17,'CONG. MACRO RUTA':38,'CONG. MICRO RUTA':4,'CONG. PRADERA':12,'EVACUACIÓN VEH.':9,'RUTA EXTENSA':665,'SALIDA TARDE':918,'VARADO':92},tu:1755,f:{APOYO:3,'CONG. MACRO RUTA':57,'CONG. MICRO RUTA':6,'CONG. PRADERA':91,'EVACUACIÓN VEH.':1,'RUTA EXTENSA':187,'SALIDA TARDE':140,'VARADO':37},tf:522},
+  {u:{APOYO:22,'CONG. MACRO RUTA':52,'CONG. MICRO RUTA':5,'CONG. PRADERA':32,'EVACUACIÓN VEH.':24,'RUTA EXTENSA':670,'SALIDA TARDE':1024,'VARADO':78},tu:1907,f:{APOYO:8,'CONG. MACRO RUTA':58,'CONG. MICRO RUTA':3,'CONG. PRADERA':87,'EVACUACIÓN VEH.':0,'RUTA EXTENSA':204,'SALIDA TARDE':136,'VARADO':44},tf:540},
+];
+let pieU=null,pieF=null;
+function renderCausas(){
+  const qi=parseInt(document.getElementById('selQ').value);
+  const d=causasData[qi];
+  document.getElementById('totalU').textContent='· '+d.tu.toLocaleString('es-CO')+' eventos';
+  document.getElementById('totalF').textContent='· '+d.tf.toLocaleString('es-CO')+' eventos';
+  function buildBars(container,obj,total,color){
+    const sorted=Object.entries(obj).sort((a,b)=>b[1]-a[1]);
+    const max=Math.max(...sorted.map(e=>e[1]));
+    container.innerHTML='';
+    sorted.forEach(([k,v])=>{
+      const pct=(v/total*100).toFixed(1),w=Math.round(v/max*100);
+      container.innerHTML+=`<div class="causa-item"><div class="causa-nombre">${k}</div><div class="causa-bw"><div class="causa-bf" style="width:${w}%;background:${causaCol[k]||color}"></div></div><div class="causa-qty">${v}</div><div class="causa-pct">${pct}%</div></div>`;
+    });
+  }
+  buildBars(document.getElementById('causasU'),d.u,d.tu,O);
+  buildBars(document.getElementById('causasF'),d.f,d.tf,G2);
+  const labC=Object.keys(d.u),colC=labC.map(k=>causaCol[k]||O);
+  if(pieU)pieU.destroy();
+  pieU=new Chart(document.getElementById('cPieU'),{type:'doughnut',data:{labels:labC,datasets:[{data:Object.values(d.u),backgroundColor:colC,borderWidth:1,borderColor:'#fff',datalabels:NO}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{boxWidth:8,padding:6,font:{size:9}}},datalabels:NO},cutout:'55%'}});
+  const labF=Object.keys(d.f),colF=labF.map(k=>causaCol[k]||G2);
+  if(pieF)pieF.destroy();
+  pieF=new Chart(document.getElementById('cPieF'),{type:'doughnut',data:{labels:labF,datasets:[{data:Object.values(d.f),backgroundColor:colF,borderWidth:1,borderColor:'#fff',datalabels:NO}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{boxWidth:8,padding:6,font:{size:9}}},datalabels:NO},cutout:'55%'}});
+}
+renderCausas();
+
+// ── COMPARATIVO ──
+new Chart(document.getElementById('c7'),{type:'bar',
+  data:{labels:['Enero','Febrero','Marzo','Abril'],datasets:[
+    {label:'2026',data:[9537,9840,10875,10875],backgroundColor:O,borderRadius:4,datalabels:NO},
+    {label:'2025',data:[4992,5594,6182,6596],backgroundColor:GR,borderRadius:4,datalabels:NO},
+  ]},
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},datalabels:NO,tooltip:{callbacks:{label:c=>c.dataset.label+': '+c.parsed.y.toLocaleString('es-CO')+' h'}}},
+    scales:{x:{grid:{display:false}},y:{ticks:{callback:v=>v.toLocaleString('es-CO')},grid:{color:'rgba(0,0,0,0.04)'}}}}
+});
+const compR=document.getElementById('compR'),maxH=10875;
+[{m:'Enero',h26:9537,h25:4992},{m:'Febrero',h26:9840,h25:5594},{m:'Marzo',h26:10875,h25:6182},{m:'Abril',h26:10875,h25:6596}].forEach(d=>{
+  const crec=((d.h26-d.h25)/d.h25*100).toFixed(1),p26=Math.round(d.h26/maxH*100),p25=Math.round(d.h25/maxH*100);
+  compR.innerHTML+=`<div class="comp-row"><div class="comp-mes">${d.m}</div><div class="comp-bars">
+    <div class="comp-br"><div class="comp-lbl" style="color:var(--o)">2026</div><div class="comp-track"><div class="bar-fill" style="width:${p26}%;background:var(--o)"></div></div><span style="font-size:10px;font-weight:700;width:65px;text-align:right;color:var(--o)">${d.h26.toLocaleString('es-CO')} h</span></div>
+    <div class="comp-br"><div class="comp-lbl" style="color:var(--gr)">2025</div><div class="comp-track"><div class="bar-fill" style="width:${p25}%;background:var(--gr2)"></div></div><span style="font-size:10px;width:65px;text-align:right;color:var(--gr)">${d.h25.toLocaleString('es-CO')} h</span></div>
+  </div><span class="pill pill-up" style="flex-shrink:0">+${crec}%</span></div>`;
+});
+
+
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>
